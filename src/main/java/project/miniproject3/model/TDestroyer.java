@@ -2,8 +2,8 @@ package project.miniproject3.model;
 
 import java.awt.*;
 
-public class Destroyer extends AShip{
-    public Destroyer(Polygon shape) {
+public class TDestroyer extends AShip{
+    public TDestroyer(Polygon shape) {
         super(shape, 2);
     }
 }

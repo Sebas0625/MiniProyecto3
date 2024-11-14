@@ -2,9 +2,9 @@ package project.miniproject3.model;
 
 import java.awt.*;
 
-public class Frigate extends AShip{
+public class TFrigate extends AShip{
 
-    public Frigate(Polygon shape) {
+    public TFrigate(Polygon shape) {
         super(shape, 1);
     }
 }

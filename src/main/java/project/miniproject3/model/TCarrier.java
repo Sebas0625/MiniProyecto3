@@ -2,8 +2,8 @@ package project.miniproject3.model;
 
 import java.awt.*;
 
-public class Carrier extends AShip{
-    public Carrier(Polygon shape){
+public class TCarrier extends AShip{
+    public TCarrier(Polygon shape){
         super(shape, 4);
     }
 }
