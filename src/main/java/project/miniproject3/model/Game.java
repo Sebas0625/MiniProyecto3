@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<AShip> ships;
 
-    ArrayList<AShip> getShips(){
+    public ArrayList<AShip> getShips(){
         return ships;
     }
 }
