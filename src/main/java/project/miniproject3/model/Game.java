@@ -137,6 +137,7 @@ public class Game {
 
 
     }
+
     public Game(){
         rand = new Random();
         carrier = new Carrier();
