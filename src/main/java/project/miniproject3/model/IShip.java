@@ -1,9 +1,10 @@
 package project.miniproject3.model;
 
-import java.awt.*;
+import javafx.scene.Node;
 
 public interface IShip {
     int getSpan();
-    Polygon getShape();
+    Node getShape();
     void impact();
+    void setOrientation(boolean orientation);
 }

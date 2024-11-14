@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Frigate extends AShip{
 
-    public Frigate(Polygon shape) {
-        super(shape, 1);
+    public Frigate(boolean orientation) {
+        super(null, 1, orientation);
     }
 }
