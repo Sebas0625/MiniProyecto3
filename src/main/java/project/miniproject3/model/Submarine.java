@@ -1,9 +1,9 @@
 package project.miniproject3.model;
 
-import java.awt.*;
+import javafx.scene.shape.Polygon;
 
 public class Submarine extends AShip{
-    public Submarine(boolean orientation) {
-        super(null,3, orientation);
+    public Submarine(Polygon shape, boolean orientation) {
+        super(shape,3, orientation);
     }
 }

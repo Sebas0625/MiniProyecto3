@@ -7,4 +7,5 @@ public interface IShip {
     Node getShape();
     void impact();
     void setOrientation(boolean orientation);
+    Boolean getOrientation();
 }

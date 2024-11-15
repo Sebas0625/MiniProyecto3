@@ -41,4 +41,9 @@ public class AShip implements IShip{
     public void setOrientation(boolean orientation){
         this.orientation = orientation;
     }
+
+    @Override
+    public Boolean getOrientation() {
+        return orientation;
+    }
 }

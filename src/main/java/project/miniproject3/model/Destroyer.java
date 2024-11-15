@@ -1,9 +1,9 @@
 package project.miniproject3.model;
 
-import java.awt.*;
+import javafx.scene.shape.Polygon;
 
 public class Destroyer extends AShip{
-    public Destroyer(boolean orientation) {
-        super(null, 2, orientation);
+    public Destroyer(Polygon shape, boolean orientation) {
+        super(shape, 2, orientation);
     }
 }

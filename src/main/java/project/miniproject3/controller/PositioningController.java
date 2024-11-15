@@ -6,7 +6,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Polygon;
-import project.miniproject3.model.Game;
+import project.miniproject3.model.*;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
@@ -16,11 +16,29 @@ import java.util.ArrayList;
 public class PositioningController {
 
     private final Game game = new Game();
-    private ArrayList<Polygon> shapes = new ArrayList<>();
     @FXML
     GridPane boardGrid;
     @FXML
-    GridPane shipsGrid;
+    Polygon carrier;
+    @FXML
+    Polygon submarine1;
+    @FXML
+    Polygon submarine2;
+    @FXML
+    Polygon destroyer1;
+    @FXML
+    Polygon destroyer2;
+    @FXML
+    Polygon destroyer3;
+    @FXML
+    Polygon frigate1;
+    @FXML
+    Polygon frigate2;
+    @FXML
+    Polygon frigate3;
+    @FXML
+    Polygon frigate4;
+    private ArrayList<AShip> ships = new ArrayList<>();
 
     @FXML
     void handleStartGame(ActionEvent event) throws IOException{
@@ -32,13 +50,19 @@ public class PositioningController {
 
     @FXML
     public void initialize() {
-        int index = 0;
-        for (int i = 0; i < 5; i++){
-            for (int j = 0; j < 2; j++){
-                Polygon shape = game.getShips().get(index).getShape();
-                shipsGrid.add(shape, j, i);
-                shape.setOnDragDetected(this::onDragDetected);
-            }
+        ships.add(new Carrier(carrier, false));
+        ships.add(new Submarine(submarine1, false));
+        ships.add(new Submarine(submarine2, false));
+        ships.add(new Destroyer(destroyer1, false));
+        ships.add(new Destroyer(destroyer2, false));
+        ships.add(new Destroyer(destroyer3, true));
+        ships.add(new Frigate(frigate1, false));
+        ships.add(new Frigate(frigate2, false));
+        ships.add(new Frigate(frigate3, false));
+        ships.add(new Frigate(frigate4, false));
+
+        for (int i = 0; i < 10; i++){
+            ships.get(i).getShape().setOnDragDetected(this::onDragDetected);
         }
 
         boardGrid.setOnDragOver(this::onDragOver);
@@ -61,7 +85,7 @@ public class PositioningController {
         event.consume();
     }
 
-    private void onDragDropped(DragEvent event){
+    private void onDragDropped(DragEvent event) {
         Dragboard db = event.getDragboard();
         boolean success = false;
 
@@ -70,17 +94,54 @@ public class PositioningController {
             int col = (int) (event.getX() / (boardGrid.getWidth() / boardGrid.getColumnCount()));
             int row = (int) (event.getY() / (boardGrid.getHeight() / boardGrid.getRowCount()));
 
-            if (col >= 0 && col < boardGrid.getColumnCount() && row >= 0 && row < boardGrid.getRowCount()) {
+            int span = 0;
+            boolean horizontal = false;
+
+            for (AShip ship : ships){
+                if (ship.getShape() == draggedShip){
+                    span = ship.getSpan();
+                    horizontal = ship.getOrientation();
+                }
+            }
+
+            if (canPlaceShip(boardGrid, col, row, span, horizontal)) {
                 boardGrid.getChildren().remove(draggedShip);
 
-                boardGrid.add(draggedShip, col, row);
+                GridPane.setColumnIndex(draggedShip, col);
+                GridPane.setRowIndex(draggedShip, row);
+                boardGrid.add(draggedShip, col, row, horizontal ? span : 1, horizontal ? 1 : span);
+
                 success = true;
             } else {
-                System.out.println("Posición fuera de los límites");
+                System.out.println("No se puede colocar el barco, posición ocupada o fuera de límites.");
             }
         }
 
         event.setDropCompleted(success);
         event.consume();
+    }
+
+    private boolean canPlaceShip(GridPane gridPane, int col, int row, int span, boolean horizontal) {
+        for (int i = 0; i < span; i++) {
+            int checkCol = horizontal ? col + i : col;
+            int checkRow = horizontal ? row : row + i;
+
+            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(gridPane, checkCol, checkRow)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isCellOccupied(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+
+            if (nodeCol != null && nodeRow != null && nodeCol == col && nodeRow == row) {
+                return true;
+            }
+        }
+        return false;
     }
 }

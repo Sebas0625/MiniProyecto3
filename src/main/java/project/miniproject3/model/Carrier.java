@@ -1,9 +1,9 @@
 package project.miniproject3.model;
 
-import java.awt.*;
+import javafx.scene.shape.Polygon;
 
 public class Carrier extends AShip{
-    public Carrier(boolean orientation){
-        super(null, 4, orientation);
+    public Carrier(Polygon shape, boolean orientation){
+        super(shape, 4, orientation);
     }
 }

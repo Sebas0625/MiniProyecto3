@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Polygon?>
 
 <AnchorPane prefHeight="480.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.PositioningController">
    <children>
@@ -47,8 +48,22 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="156.0" minHeight="10.0" percentHeight="50.0" prefHeight="156.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="156.0" minHeight="10.0" percentHeight="50.0" prefHeight="156.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="156.0" minHeight="10.0" percentHeight="50.0" prefHeight="156.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="90.0" minHeight="10.0" percentHeight="50.0" prefHeight="67.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Polygon fx:id="carrier" fill="DODGERBLUE" points="-37.0, 56.0, -5.0, 55.0, -37.0, -145.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowSpan="4" />
+            <Polygon fx:id="submarine1" fill="DODGERBLUE" points="-18.0, 24.0, 3.0, 24.0, -14.0, -95.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowSpan="3" />
+            <Polygon fx:id="submarine2" fill="DODGERBLUE" points="-19.0, 30.0, 5.0, 32.0, -10.0, -76.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowSpan="3" />
+            <Polygon fx:id="destroyer1" fill="DODGERBLUE" points="-35.0, 40.0, -7.0, 40.0, -24.0, -15.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowSpan="2" />
+            <Polygon fx:id="destroyer2" fill="DODGERBLUE" points="-35.0, 40.0, -7.0, 40.0, -23.0, -9.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.rowSpan="2" />
+            <Polygon fx:id="destroyer3" fill="DODGERBLUE" points="-7.0, 11.0, 50.0, -3.0, -2.0, -21.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <Polygon fx:id="frigate1" fill="DODGERBLUE" points="-7.0, 11.0, 26.0, 11.0, 8.0, -23.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Polygon fx:id="frigate2" fill="DODGERBLUE" points="-7.0, 11.0, 26.0, 11.0, 8.0, -23.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Polygon fx:id="frigate3" fill="DODGERBLUE" points="-7.0, 11.0, 26.0, 11.0, 8.0, -23.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Polygon fx:id="frigate4" fill="DODGERBLUE" points="-7.0, 11.0, 26.0, 11.0, 8.0, -23.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+         </children>
       </GridPane>
    </children>
 </AnchorPane>

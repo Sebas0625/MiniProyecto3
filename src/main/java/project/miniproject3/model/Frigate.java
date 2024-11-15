@@ -1,10 +1,10 @@
 package project.miniproject3.model;
 
-import java.awt.*;
+import javafx.scene.shape.Polygon;
 
 public class Frigate extends AShip{
 
-    public Frigate(boolean orientation) {
-        super(null, 1, orientation);
+    public Frigate(Polygon shape, boolean orientation) {
+        super(shape, 1, orientation);
     }
 }
