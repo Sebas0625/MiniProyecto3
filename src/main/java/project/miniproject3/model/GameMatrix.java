@@ -13,8 +13,8 @@ private int[][] matrix;
 
 
  }
- public void setNumber(int row, int col) {
-    matrix[row][col] = 1;
+ public void setNumber(int row, int col, int number) {
+    matrix[row][col] = number;
  }
  public int getNumber(int row, int col) {return matrix[row][col];}
 

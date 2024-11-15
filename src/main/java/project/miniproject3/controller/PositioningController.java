@@ -2,7 +2,6 @@ package project.miniproject3.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import project.miniproject3.model.AShip;
 import project.miniproject3.model.Game;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
@@ -29,7 +28,4 @@ public class PositioningController implements Initializable {
 
     }
 
-    public void handleShip(AShip ship){
-
-    }
 }
