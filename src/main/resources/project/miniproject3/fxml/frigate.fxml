@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Polygon fill="#8d704b" layoutX="99.0" layoutY="129.0" points="103.0, 10.75, 103.0, 14.75, 120.75, 14.75, 120.75, 10.75, 118.25, 5.0, 112.5, -3.0, 105.5, 5.0" stroke="#711c0f" />
+      <Polygon fill="#711c0f" layoutX="-30.0" layoutY="67.0" points="231.5, 77.25, 233.0, 83.12449645996094, 248.0, 83.12449645996094, 250.0, 77.25" stroke="#711c0f" />
+      <Circle fill="DODGERBLUE" layoutX="206.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
+      <Circle fill="DODGERBLUE" layoutX="211.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
+      <Circle fill="DODGERBLUE" layoutX="216.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
+   </children>
+</Pane>
