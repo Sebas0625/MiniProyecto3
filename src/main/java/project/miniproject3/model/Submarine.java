@@ -1,5 +1,4 @@
 package project.miniproject3.model;
-
 import javafx.scene.shape.Polygon;
 
 public class Submarine extends AShip{
