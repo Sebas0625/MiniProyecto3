@@ -33,11 +33,11 @@ public class Game {
         System.out.println(aux2);
         directionaux = rand.nextInt(2);
         if (directionaux == 0) {
-            for (int i = 0; i < carrier.getLenght(); i++) {
+            for (int i = 0; i < 4; i++) {
                 machineMatrix.setNumber(aux1 + i, aux2, 1);
             }
         } else {
-            for (int i = 0; i < carrier.getLenght(); i++) {
+            for (int i = 0; i < 4; i++) {
                 machineMatrix.setNumber(aux1, aux2 + i,1);
             }
         }
