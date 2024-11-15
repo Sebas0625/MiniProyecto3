@@ -1,5 +1,6 @@
 package project.miniproject3;
 
+import project.miniproject3.model.Game;
 import project.miniproject3.view.WelcomeStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,7 +20,13 @@ public class Main extends Application {
      * @param args Command line arguments passed to the application.
      */
     public static void main(String[] args) {
+        Game game=new Game();
+        game.fillMachineMatrix();
         launch(args);
+
+
+
+
     }
 
     /**
