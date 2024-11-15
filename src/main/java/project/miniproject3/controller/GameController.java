@@ -3,6 +3,8 @@ package project.miniproject3.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import project.miniproject3.model.Carrier;
+import project.miniproject3.model.Frigate;
 import project.miniproject3.model.Game;
 import project.miniproject3.view.GameStage;
 
@@ -14,9 +16,8 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        
     }
+
     @FXML
     void handleExitButton(ActionEvent event)throws IOException {
         GameStage.deleteInstance();

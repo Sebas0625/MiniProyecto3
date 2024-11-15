@@ -111,6 +111,16 @@ public class PositioningController {
                 GridPane.setRowIndex(draggedShip, row);
                 boardGrid.add(draggedShip, col, row, horizontal ? span : 1, horizontal ? 1 : span);
 
+                if (horizontal){
+                    for (int i = 0; i < span; i++){
+                        game.getPlayerMatrix().setNumber(row, col + i, span);
+                    }
+                } else{
+                    for (int i = 0; i < span; i++){
+                        game.getPlayerMatrix().setNumber(row + i, col, span);
+                    }
+                }
+
                 success = true;
             } else {
                 System.out.println("No se puede colocar el barco, posición ocupada o fuera de límites.");
@@ -126,22 +136,14 @@ public class PositioningController {
             int checkCol = horizontal ? col + i : col;
             int checkRow = horizontal ? row : row + i;
 
-            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(gridPane, checkCol, checkRow)) {
+            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(checkCol, checkRow)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isCellOccupied(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            Integer nodeCol = GridPane.getColumnIndex(node);
-            Integer nodeRow = GridPane.getRowIndex(node);
-
-            if (nodeCol != null && nodeRow != null && nodeCol == col && nodeRow == row) {
-                return true;
-            }
-        }
-        return false;
+    private boolean isCellOccupied(int col, int row) {
+        return game.getPlayerMatrix().getNumber(row, col) != 0;
     }
 }

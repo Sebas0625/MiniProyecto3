@@ -1,32 +1,31 @@
 package project.miniproject3.model;
 
-public class GameMatrix {
-private int[][] matrix;
+import java.util.Arrays;
 
- public GameMatrix() {
-     matrix = new int[10][10];
-     for (int i = 0; i < matrix.length; i++) {
-         for (int j = 0; j < matrix[i].length; j++) {
-             matrix[i][j] = 0;
+public class GameMatrix {
+    private final int[][] matrix;
+
+     public GameMatrix() {
+         matrix = new int[10][10];
+         for (int[] ints : matrix) {
+             Arrays.fill(ints, 0);
          }
      }
 
+     public void setNumber(int row, int col, int number) {
+        matrix[row][col] = number;
+     }
 
- }
- public void setNumber(int row, int col, int number) {
-    matrix[row][col] = number;
- }
- public int getNumber(int row, int col) {return matrix[row][col];}
+     public int getNumber(int row, int col) {return matrix[row][col];}
 
+    public void printMatrix() {
+        for (int[] ints : matrix) {
+            for (int anInt : ints) {
+                System.out.print(anInt + " ");
+            }
+            System.out.println();
 
-    public void printMatrix() {for (int i = 0; i < matrix.length; i++) {
-        for (int j = 0; j < matrix[i].length; j++) {
-            System.out.print(matrix[i][j]+" " );
         }
-        System.out.println();
-
     }
-
- }
 }
 
