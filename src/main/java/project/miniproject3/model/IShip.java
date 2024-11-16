@@ -6,6 +6,6 @@ public interface IShip {
     int getSpan();
     Node getShape();
     void impact();
-    void setOrientation(boolean orientation);
-    Boolean getOrientation();
+    void setHorizontal(boolean horizontal);
+    Boolean isHorizontal();
 }

@@ -8,13 +8,13 @@ public class AShip implements IShip{
     private final Polygon shape;
     private final int span;
     private int impacts;
-    private boolean orientation;
+    private boolean horizontal;
     private boolean isSunken;
 
-    public AShip(Polygon shape, int span, boolean orientation){
+    public AShip(Polygon shape, int span, boolean horizontal){
         this.shape = shape;
         this.span = span;
-        this.orientation = orientation;
+        this.horizontal = horizontal;
         impacts = 0;
         isSunken = false;
     }
@@ -38,12 +38,12 @@ public class AShip implements IShip{
     }
 
     @Override
-    public void setOrientation(boolean orientation){
-        this.orientation = orientation;
+    public void setHorizontal(boolean horizontal){
+        this.horizontal = horizontal;
     }
 
     @Override
-    public Boolean getOrientation() {
-        return orientation;
+    public Boolean isHorizontal() {
+        return horizontal;
     }
 }

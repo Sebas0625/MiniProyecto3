@@ -11,6 +11,7 @@ import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 
 public class PositioningController {
@@ -41,9 +42,9 @@ public class PositioningController {
     private ArrayList<AShip> ships = new ArrayList<>();
 
     @FXML
-    void handleStartGame(ActionEvent event) throws IOException{
-        // Inicializar game con la información del boardGrid;
-
+    void handleStartGame(ActionEvent event) throws IOException {
+        fillPlayersMatrix();
+        game.getPlayerMatrix().printMatrix();
         WelcomeStage.closeInstance();
         GameStage.getInstance();
     }
@@ -61,15 +62,29 @@ public class PositioningController {
         ships.add(new Frigate(frigate3, false));
         ships.add(new Frigate(frigate4, false));
 
-        for (int i = 0; i < 10; i++){
-            ships.get(i).getShape().setOnDragDetected(this::onDragDetected);
+        for (int i = 0; i < 10; i++) {
+            Polygon ship = ships.get(i).getShape();
+            ship.setOnDragDetected(this::onDragDetected);
+            int finalI = i;
+            EventHandler<KeyEvent> keyPressedHandler = keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.R) {
+                    rotateShip(ships.get(finalI));
+                }
+            };
+            ship.setOnMouseEntered(mouseEvent -> {
+                ship.requestFocus();
+                ship.addEventHandler(KeyEvent.KEY_PRESSED, keyPressedHandler);
+            });
+            ship.setOnMouseExited(mouseEvent -> {
+                ship.removeEventHandler(KeyEvent.KEY_PRESSED, keyPressedHandler);
+            });
         }
 
         boardGrid.setOnDragOver(this::onDragOver);
         boardGrid.setOnDragDropped(this::onDragDropped);
     }
 
-    private void onDragDetected(MouseEvent event){
+    private void onDragDetected(MouseEvent event) {
         Polygon shape = (Polygon) event.getSource();
         Dragboard dragboard = shape.startDragAndDrop(TransferMode.MOVE);
         var content = new ClipboardContent();
@@ -78,7 +93,7 @@ public class PositioningController {
         event.consume();
     }
 
-    private void onDragOver(DragEvent event){
+    private void onDragOver(DragEvent event) {
         if (event.getGestureSource() != boardGrid && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
@@ -97,10 +112,10 @@ public class PositioningController {
             int span = 0;
             boolean horizontal = false;
 
-            for (AShip ship : ships){
-                if (ship.getShape() == draggedShip){
+            for (AShip ship : ships) {
+                if (ship.getShape() == draggedShip) {
                     span = ship.getSpan();
-                    horizontal = ship.getOrientation();
+                    horizontal = ship.isHorizontal();
                 }
             }
 
@@ -110,16 +125,6 @@ public class PositioningController {
                 GridPane.setColumnIndex(draggedShip, col);
                 GridPane.setRowIndex(draggedShip, row);
                 boardGrid.add(draggedShip, col, row, horizontal ? span : 1, horizontal ? 1 : span);
-
-                if (horizontal){
-                    for (int i = 0; i < span; i++){
-                        game.getPlayerMatrix().setNumber(row, col + i, span);
-                    }
-                } else{
-                    for (int i = 0; i < span; i++){
-                        game.getPlayerMatrix().setNumber(row + i, col, span);
-                    }
-                }
 
                 success = true;
             } else {
@@ -144,6 +149,61 @@ public class PositioningController {
     }
 
     private boolean isCellOccupied(int col, int row) {
-        return game.getPlayerMatrix().getNumber(row, col) != 0;
+        for (Node child : boardGrid.getChildren()) {
+            Integer childCol = GridPane.getColumnIndex(child);
+            Integer childRow = GridPane.getRowIndex(child);
+
+            if (childCol == null) childCol = 0;
+            if (childRow == null) childRow = 0;
+
+            int colSpan = GridPane.getColumnSpan(child) == null ? 1 : GridPane.getColumnSpan(child);
+            int rowSpan = GridPane.getRowSpan(child) == null ? 1 : GridPane.getRowSpan(child);
+
+            if (col >= childCol && col < childCol + colSpan &&
+                    row >= childRow && row < childRow + rowSpan) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void fillPlayersMatrix(){
+        for (Node ship : boardGrid.getChildren()){
+            int row = GridPane.getRowIndex(ship) == null ? 0 : GridPane.getRowIndex(ship);
+            int col = GridPane.getColumnIndex(ship) == null ? 0 : GridPane.getColumnIndex(ship);
+            int colSpan = GridPane.getColumnSpan(ship) == null ? 1 : GridPane.getColumnSpan(ship);
+            int rowSpan = GridPane.getRowSpan(ship) == null ? 1 : GridPane.getRowSpan(ship);
+            int type = colSpan == 1 ? rowSpan : colSpan;
+            for (int i = row; i < row + rowSpan; i++){
+                for (int j = col; j < col + colSpan; j++){
+                    game.getPlayerMatrix().setNumber(i, j, type);
+                }
+            }
+        }
+    }
+
+    private void rotateShip(AShip ship) {
+        Polygon shape = ship.getShape();
+        int col = GridPane.getColumnIndex(shape) == null ? 0 : GridPane.getColumnIndex(shape);
+        int row = GridPane.getRowIndex(shape) == null ? 0 : GridPane.getRowIndex(shape);
+        boolean isHorizontal = ship.isHorizontal();
+        int span = ship.getSpan();
+
+        boolean newIsHorizontal = !isHorizontal;
+
+        int newColSpan = newIsHorizontal ? span : 1;
+        int newRowSpan = newIsHorizontal ? 1 : span;
+
+        if (col + newColSpan < boardGrid.getColumnCount() &&
+                row + newRowSpan < boardGrid.getRowCount() &&
+                isCellOccupied(col, row)) {
+
+            GridPane.setColumnSpan(shape, newColSpan);
+            GridPane.setRowSpan(shape, newRowSpan);
+            ship.setHorizontal(newIsHorizontal);
+            shape.setRotate(newIsHorizontal ? 0 : 90);
+        } else {
+            System.out.println("No se puede rotar el barco aquí.");
+        }
     }
 }

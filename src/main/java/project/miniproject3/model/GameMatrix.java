@@ -19,6 +19,7 @@ public class GameMatrix {
      public int getNumber(int row, int col) {return matrix[row][col];}
 
     public void printMatrix() {
+        System.out.println("============================================");
         for (int[] ints : matrix) {
             for (int anInt : ints) {
                 System.out.print(anInt + " ");
