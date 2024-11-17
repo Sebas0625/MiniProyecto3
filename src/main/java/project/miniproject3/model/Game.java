@@ -69,6 +69,8 @@ public class Game {
         }
     }
 
+    public int getPlayerMatrixNum(int row, int col){return playerMatrix.getNumber(row, col);}
+    public int getMachineMatrixNum(int row, int col){return machineMatrix.getNumber(row, col);}
 
     public GameMatrix getPlayerMatrix(){
         return playerMatrix;
