@@ -2,7 +2,9 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -11,5 +13,7 @@
       <Circle fill="DODGERBLUE" layoutX="206.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
       <Circle fill="DODGERBLUE" layoutX="211.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
       <Circle fill="DODGERBLUE" layoutX="216.0" layoutY="147.0" radius="2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.6" />
+      <Rectangle arcHeight="5.0" arcWidth="2.0" fill="#757575" height="8.0" layoutX="206.5" layoutY="133.0" stroke="BLACK" strokeType="INSIDE" width="9.0" />
+      <Line endX="-93.25" layoutX="307.8" layoutY="131.0" rotate="90.0" startX="-100.0" strokeWidth="2.0" />
    </children>
 </Pane>

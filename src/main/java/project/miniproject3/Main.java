@@ -37,7 +37,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         WelcomeStage.getInstance(); // Initialize the WelcomeStage instance
 
-        Group root = Ships.destructor();
+        Group root = Ships.frigate();
 
 
         // Crea la escena y añade el grupo

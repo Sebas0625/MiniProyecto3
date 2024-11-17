@@ -2,10 +2,7 @@ package project.miniproject3.model;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.QuadCurve;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 
 public class Ships {
 
@@ -480,19 +477,6 @@ public class Ships {
         line3.setRotate(90.0);
         line3.setStroke(Color.WHITE);
 
-//        Line line4 = new Line(-95.0, -100.0, -100.0, -100.0);
-//        line4.setLayoutX(347.5);
-//        line4.setLayoutY(172.0);
-//        line4.setRotate(90.0);
-//        line4.setStroke(Color.web("#353535"));
-//        line4.setStrokeWidth(2.0);
-//
-//        Line line5 = new Line(-96.0, -100.0, -100.0, -100.0);
-//        line5.setLayoutX(348.0);
-//        line5.setLayoutY(172.0);
-//        line5.setRotate(90.0);
-//        line5.setStroke(Color.web("#353535"));
-
         Line line6 = new Line(-94.5, -99.5, -99.5, -99.5);
         line6.setLayoutX(347.0);
         line6.setLayoutY(238);
@@ -516,6 +500,85 @@ public class Ships {
 
         return barco;
     }
+
+    public static Group frigate() {
+        Group group = new Group();
+
+        // Proa (Polígono superior)
+        Polygon proa = new Polygon();
+        proa.getPoints().addAll(
+                103.0, 10.75,
+                103.0, 14.75,
+                120.75, 14.75,
+                120.75, 10.75,
+                118.25, 5.0,
+                112.5, -3.0,
+                105.5, 5.0
+        );
+        proa.setFill(Color.web("#8d704b"));
+        proa.setStroke(Color.web("#711c0f"));
+        proa.setLayoutX(99.0);
+        proa.setLayoutY(129.0);
+
+        // Parte trasera (Polígono)
+        Polygon parteTrasera = new Polygon();
+        parteTrasera.getPoints().addAll(
+                231.5, 77.25,
+                233.0, 83.1245,
+                248.0, 83.1245,
+                250.0, 77.25
+        );
+        parteTrasera.setFill(Color.web("#711c0f"));
+        parteTrasera.setStroke(Color.web("#711c0f"));
+        parteTrasera.setLayoutX(-30.0);
+        parteTrasera.setLayoutY(67.0);
+
+        // Círculos azules (ventanas)
+        Circle ventana1 = new Circle(206.0, 147.0, 2.0);
+        ventana1.setFill(Color.DODGERBLUE);
+        ventana1.setStroke(Color.BLACK);
+        ventana1.setStrokeWidth(0.6);
+
+
+        Circle ventana2 = new Circle(211.0, 147.0, 2.0);
+        ventana2.setFill(Color.DODGERBLUE);
+        ventana2.setStroke(Color.BLACK);
+        ventana2.setStrokeWidth(0.6);
+
+        Circle ventana3 = new Circle(216.0, 147.0, 2.0);
+        ventana3.setFill(Color.DODGERBLUE);
+        ventana3.setStroke(Color.BLACK);
+        ventana3.setStrokeWidth(0.6);
+
+        // Rectángulo gris (estructura central)
+        Rectangle estructuraCentral = new Rectangle(206.5, 133.0, 9.0, 8.0);
+        estructuraCentral.setArcHeight(5.0);
+        estructuraCentral.setArcWidth(2.0);
+        estructuraCentral.setFill(Color.web("#757575"));
+        estructuraCentral.setStroke(Color.BLACK);
+
+        // Línea vertical (detalle inferior)
+        Line lineaVertical = new Line(-100.0,0.0 , -93.25, 0.0);
+        lineaVertical.setRotate(90.0);
+        lineaVertical.setStrokeWidth(2.0);
+        lineaVertical.setLayoutX(307.8);
+        lineaVertical.setLayoutY(131.0);
+
+
+        // Agregar todos los elementos al grupo
+        group.getChildren().addAll(
+                proa,
+                parteTrasera,
+                ventana1,
+                ventana2,
+                ventana3,
+                estructuraCentral,
+                lineaVertical
+        );
+
+        return group;
+    }
+
 
 
 }
