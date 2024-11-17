@@ -1,8 +1,9 @@
 package project.miniproject3.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class GameMatrix {
+public class GameMatrix implements Serializable {
     private final int[][] matrix;
 
      public GameMatrix() {

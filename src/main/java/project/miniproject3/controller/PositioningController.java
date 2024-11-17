@@ -3,54 +3,58 @@ package project.miniproject3.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Polygon;
 import project.miniproject3.model.*;
+import project.miniproject3.model.ships.*;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
 
 public class PositioningController {
 
     private final Game game = new Game();
     @FXML
-    GridPane boardGrid;
+    private GridPane boardGrid;
     @FXML
-    Polygon carrier;
+    private Polygon carrier;
     @FXML
-    Polygon submarine1;
+    private Polygon submarine1;
     @FXML
-    Polygon submarine2;
+    private Polygon submarine2;
     @FXML
-    Polygon destroyer1;
+    private Polygon destroyer1;
     @FXML
-    Polygon destroyer2;
+    private Polygon destroyer2;
     @FXML
-    Polygon destroyer3;
+    private Polygon destroyer3;
     @FXML
-    Polygon frigate1;
+    private Polygon frigate1;
     @FXML
-    Polygon frigate2;
+    private Polygon frigate2;
     @FXML
-    Polygon frigate3;
+    private Polygon frigate3;
     @FXML
-    Polygon frigate4;
+    private Polygon frigate4;
     private ArrayList<AShip> ships = new ArrayList<>();
+    private SerializableFileHandler serializableFileHandler;
 
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
         fillPlayersMatrix();
         game.getPlayerMatrix().printMatrix();
+        serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
         WelcomeStage.closeInstance();
         GameStage.getInstance();
+        GameStage.getInstance().getGameController().setGame(game);
     }
 
     @FXML
     public void initialize() {
+        serializableFileHandler = new SerializableFileHandler();
+
         ships.add(new Carrier(carrier, false));
         ships.add(new Submarine(submarine1, false));
         ships.add(new Submarine(submarine2, false));

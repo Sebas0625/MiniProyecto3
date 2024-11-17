@@ -1,10 +1,8 @@
-package project.miniproject3.model;
-
-import javafx.scene.Node;
+package project.miniproject3.model.ships;
 
 import javafx.scene.shape.Polygon;
 
-public class AShip implements IShip{
+public class AShip implements IShip {
     private final Polygon shape;
     private final int span;
     private int impacts;

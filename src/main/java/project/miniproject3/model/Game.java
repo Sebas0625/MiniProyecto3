@@ -1,12 +1,9 @@
 package project.miniproject3.model;
 
-import project.miniproject3.model.boats.Carrier;
-import project.miniproject3.model.boats.Destroyers;
-import project.miniproject3.model.boats.Submarine;
-
+import java.io.Serializable;
 import java.util.Random;
 
-public class Game {
+public class Game implements Serializable {
     private final Random rand;
     private final GameMatrix playerMatrix;
     private final GameMatrix machineMatrix;

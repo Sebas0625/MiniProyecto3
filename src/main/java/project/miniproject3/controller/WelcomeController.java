@@ -13,11 +13,31 @@ import java.io.IOException;
 public class WelcomeController {
 
     @FXML
-    void handlePlay(ActionEvent event) throws IOException {
+    public void handlePlay(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/positioning-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void handleContinue(ActionEvent event){
+
+    }
+
+    @FXML
+    public void handleTutorial(){
+
+    }
+
+    @FXML
+    public void handleCredits(){
+
+    }
+
+    @FXML
+    public void handleCharacter(){
+
     }
 }

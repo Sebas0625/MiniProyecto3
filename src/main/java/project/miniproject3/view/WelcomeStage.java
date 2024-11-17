@@ -1,5 +1,6 @@
 package project.miniproject3.view;
 
+import javafx.scene.text.Font;
 import project.miniproject3.controller.WelcomeController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,12 +29,11 @@ public class WelcomeStage extends Stage {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/project/miniproject3/fxml/welcome-view.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        // scene.getStylesheets().add(getClass().getResource("").toExternalForm());
+        this.welcomeController = loader.getController();
+        scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
         //getIcons().add(new Image(String.valueOf(getClass().getResource(""))));
         setScene(scene);
-        setTitle("Battleship");
-        setWidth(780);
-        setHeight(480);
+        setTitle("BattleShip");
         setResizable(false);
         setOnCloseRequest(windowEvent -> {
             windowEvent.consume();

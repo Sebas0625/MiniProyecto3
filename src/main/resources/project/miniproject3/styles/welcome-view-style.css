@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url("../fonts/ArcaneNine.ttf");
+}
+
+.root {
+    -fx-background-image: url("../images/background.png") format("truetype");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+#title{
+    -fx-font-family: 'CustomFont';
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(226, 177, 92);
+}
+
+.button{
+    -fx-background-color: transparent;
+    -fx-font-family: 'CustomFont';
+    -fx-font-weight: 100;
+    -fx-text-fill: rgba(226, 177, 92);
+    -fx-border-color: transparent;
+}
+
+.button1{
+    -fx-font-size: 30px;
+}
+
+.button2{
+    -fx-font-size: 20px;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(255, 241, 216, 0.5), 15, 0.7, 0, 0);
+}
