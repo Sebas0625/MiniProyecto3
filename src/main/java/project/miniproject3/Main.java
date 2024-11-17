@@ -23,10 +23,6 @@ public class Main extends Application {
         Game game=new Game();
         game.fillMachineMatrix();
         launch(args);
-
-
-
-
     }
 
     /**
