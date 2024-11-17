@@ -29,3 +29,29 @@
 
    </children>
 </Pane>
+
+
+
+
+        // Línea blanca debajo de la proa
+        Line lineaBlancaProa = new Line(90, 53, 110, 53);
+        lineaBlancaProa.setStroke(Color.WHITE);
+        lineaBlancaProa.setStrokeWidth(1);
+
+        // Parte blanca debajo de la proa
+        Rectangle parteBlanca = new Rectangle(92, 50, 16, 5);
+        parteBlanca.setFill(Color.WHITE);
+        parteBlanca.setStroke(Color.BLACK);
+
+        // Líneas en forma de "H" dentro del motor
+        Line lineaHorizontalHelipuerto = new Line(92, 160, 108, 160);
+        lineaHorizontalHelipuerto.setStroke(Color.WHITE);
+        lineaHorizontalHelipuerto.setStrokeWidth(2);
+
+        Line lineaVerticalIzquierda = new Line(94, 155, 94, 165);
+        lineaVerticalIzquierda.setStroke(Color.WHITE);
+        lineaVerticalIzquierda.setStrokeWidth(2);
+
+        Line lineaVerticalDerecha = new Line(106, 155, 106, 165);
+        lineaVerticalDerecha.setStroke(Color.WHITE);
+        lineaVerticalDerecha.setStrokeWidth(2);

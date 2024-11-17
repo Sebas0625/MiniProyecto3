@@ -398,104 +398,124 @@ public class Ships {
 
 
     public static Group destructor() {
-        Group group = new Group();
+        Group barco = new Group();
 
-        // Polígono
-        Polygon polygon = new Polygon();
-        polygon.getPoints().addAll(180.0, 103.5, 180.0, 116.5, 180.0, 116.5, 180.0, 126.0, 182.5, 126.0, 182.5, 161.5,
-                180.0, 161.5, 180.0, 167.5, 175.5, 167.5, 170.0, 167.5, 170.0, 161.5, 167.75, 161.5,
-                167.75, 126.0, 170.0, 126.0, 170.0, 116.5, 170.0, 116.5, 170.0, 103.5, 171.75, 103.5,
-                178.5, 103.5);
+        // Polígono principal del barco
+        Polygon polygon = new Polygon(
+                180.0, 103.5, 180.0, 116.5, 180.0, 116.5, 180.0, 126.0, 182.5, 126.0,
+                182.5, 161.5, 180.0, 161.5, 180.0, 167.5, 175.5, 167.5, 170.0, 167.5,
+                170.0, 161.5, 167.75, 161.5, 167.75, 126.0, 170.0, 126.0, 170.0, 116.5,
+                170.0, 116.5, 170.0, 103.5, 171.75, 103.5, 178.5, 103.5
+        );
         polygon.setFill(Color.web("#ac8b62"));
         polygon.setStroke(Color.BLACK);
         polygon.setStrokeWidth(1);
+        polygon.setLayoutX(75.0);
+        polygon.setLayoutY(30.0);
 
-        // Rectángulo gris
-        Rectangle rectangle1 = new Rectangle(245.0, 190.0, 10.0, 9.0);
-        rectangle1.setFill(Color.web("#6a6a6a"));
-        rectangle1.setStroke(Color.BLACK);
+        // Rectángulos
+        Rectangle rect1 = new Rectangle(245.0, 190.0, 10.0, 9.0);
+        rect1.setFill(Color.web("#6a6a6a"));
+        rect1.setStroke(Color.BLACK);
 
-        // Líneas blancas
-        Line line1 = new Line(348.0, 193.0, 248.0, 193.0);
+        Rectangle rect2 = new Rectangle(245.0, 161.0, 10.0, 21.0);
+        rect2.setFill(Color.web("#848484"));
+        rect2.setStroke(Color.BLACK);
+        rect2.setStrokeWidth(0.5);
+
+        Rectangle rect3 = new Rectangle(246.5, 159.0, 7.0, 23.0);
+        rect3.setFill(Color.web("#848484"));
+        rect3.setStroke(Color.BLACK);
+        rect3.setArcWidth(2.0);
+        rect3.setArcHeight(2.0);
+        rect3.setStrokeWidth(0.5);
+
+        Rectangle rect4 = new Rectangle(244.0, 163.0, 12.0, 2.0);
+        rect4.setFill(Color.web("#848484"));
+        rect4.setStroke(Color.BLACK);
+        rect4.setArcWidth(2.0);
+        rect4.setArcHeight(2.0);
+        rect4.setStrokeWidth(0.3);
+
+        Rectangle rect5 = new Rectangle(244.0, 175.0, 12.0, 2.0);
+        rect5.setFill(Color.web("#848484"));
+        rect5.setStroke(Color.BLACK);
+        rect5.setArcWidth(2.0);
+        rect5.setArcHeight(2.0);
+        rect5.setStrokeWidth(0.3);
+
+        Rectangle rect6 = new Rectangle(243.0, 169.0, 14.0, 4.0);
+        rect6.setFill(Color.web("#848484"));
+        rect6.setStroke(Color.BLACK);
+        rect6.setArcWidth(2.0);
+        rect6.setArcHeight(2.0);
+        rect6.setRotate(90.0);
+        rect6.setStrokeWidth(0.3);
+
+        // Curva cuadrática
+        QuadCurve quadCurve = new QuadCurve(
+                4.25, 27.5, // Inicio
+                10.25, 6.5, // Control
+                16.0, 27.5  // Final
+        );
+        quadCurve.setLayoutX(240.0);
+        quadCurve.setLayoutY(107.0);
+        quadCurve.setFill(Color.web("#6a6a6a"));
+        quadCurve.setStroke(Color.BLACK);
+
+        // Líneas
+        Line line1 = new Line(-100.0, 4.25, -100.0, 4.25);
+        line1.setLayoutX(348.0);
+        line1.setLayoutY(193.0);
         line1.setStroke(Color.WHITE);
 
-        Line line2 = new Line(352.0, 193.0, 252.0, 193.0);
+        Line line2 = new Line(-100.0, 4.25, -100.0, 4.25);
+        line2.setLayoutX(352.0);
+        line2.setLayoutY(193.0);
         line2.setStroke(Color.WHITE);
 
-        Line line3 = new Line(350.0, 193.0, 250.0, 193.0);
-        line3.setStroke(Color.WHITE);
+        Line line3 = new Line(-100.0, 4.25, -100.0, 4.25);
+        line3.setLayoutX(350.0);
+        line3.setLayoutY(193.0);
         line3.setRotate(90.0);
+        line3.setStroke(Color.WHITE);
 
-        // Rectángulo gris oscuro
-        Rectangle rectangle2 = new Rectangle(245.0, 161.0, 10.0, 21.0);
-        rectangle2.setFill(Color.web("#848484"));
-        rectangle2.setStroke(Color.BLACK);
-        rectangle2.setStrokeWidth(0.5);
+//        Line line4 = new Line(-95.0, -100.0, -100.0, -100.0);
+//        line4.setLayoutX(347.5);
+//        line4.setLayoutY(172.0);
+//        line4.setRotate(90.0);
+//        line4.setStroke(Color.web("#353535"));
+//        line4.setStrokeWidth(2.0);
+//
+//        Line line5 = new Line(-96.0, -100.0, -100.0, -100.0);
+//        line5.setLayoutX(348.0);
+//        line5.setLayoutY(172.0);
+//        line5.setRotate(90.0);
+//        line5.setStroke(Color.web("#353535"));
 
-        // Rectángulo gris oscuro con bordes redondeados
-        Rectangle rectangle3 = new Rectangle(246.5, 159.0, 7.0, 23.0);
-        rectangle3.setFill(Color.web("#848484"));
-        rectangle3.setStroke(Color.BLACK);
-        rectangle3.setArcHeight(2.0);
-        rectangle3.setArcWidth(2.0);
-        rectangle3.setStrokeWidth(0.5);
-
-        // Rectángulo pequeño
-        Rectangle rectangle4 = new Rectangle(244.0, 163.0, 12.0, 2.0);
-        rectangle4.setFill(Color.web("#848484"));
-        rectangle4.setStroke(Color.BLACK);
-        rectangle4.setStrokeWidth(0.3);
-        rectangle4.setArcHeight(2.0);
-        rectangle4.setArcWidth(2.0);
-
-        // Otro rectángulo pequeño
-        Rectangle rectangle5 = new Rectangle(244.0, 175.0, 12.0, 2.0);
-        rectangle5.setFill(Color.web("#848484"));
-        rectangle5.setStroke(Color.BLACK);
-        rectangle5.setStrokeWidth(0.3);
-        rectangle5.setArcHeight(2.0);
-        rectangle5.setArcWidth(2.0);
-
-        // Rectángulo pequeño rotado
-        Rectangle rectangle6 = new Rectangle(243.0, 169.0, 14.0, 4.0);
-        rectangle6.setFill(Color.web("#848484"));
-        rectangle6.setStroke(Color.BLACK);
-        rectangle6.setStrokeWidth(0.3);
-        rectangle6.setRotate(90.0);
-        rectangle6.setArcHeight(2.0);
-        rectangle6.setArcWidth(2.0);
-
-        // Línea gris
-        Line line4 = new Line(347.5, 172.0, 247.5, 172.0);
-        line4.setStroke(Color.web("#353535"));
-        line4.setStrokeWidth(2.0);
-        line4.setRotate(90.0);
-
-        // Líneas pequeñas grises
-        Line line5 = new Line(348.0, 172.0, 248.0, 172.0);
-        line5.setStroke(Color.web("#353535"));
-
-        Line line6 = new Line(348.0, 143.0, 248.0, 143.0);
+        Line line6 = new Line(-94.5, -99.5, -99.5, -99.5);
+        line6.setLayoutX(347.0);
+        line6.setLayoutY(238);
         line6.setStroke(Color.WHITE);
         line6.setStrokeWidth(4.0);
 
-        // Curva
-        QuadCurve curve = new QuadCurve();
-        curve.setStartX(4.25);
-        curve.setStartY(27.5);
-        curve.setControlX(10.25);
-        curve.setControlY(6.5);
-        curve.setEndX(16.0);
-        curve.setEndY(27.5);
-        curve.setFill(Color.web("#6a6a6a"));
-        curve.setStroke(Color.BLACK);
-        curve.setStrokeWidth(1);
+        // Línea blanca de abajo
+        Line lineaHorizontalHelipuerto = new Line(98, 160, 102, 160);
+        lineaHorizontalHelipuerto.setStroke(Color.WHITE);
+        lineaHorizontalHelipuerto.setStrokeWidth(2);
+        lineaHorizontalHelipuerto.setLayoutX(150.0);
+        lineaHorizontalHelipuerto.setLayoutY(35.0);
 
-        // Añadir todo al grupo
-        group.getChildren().addAll(polygon, rectangle1, line1, line2, line3, rectangle2, rectangle3, rectangle4, rectangle5,
-                rectangle6, line4, line5, line6, curve);
 
-        return group;
+
+        // Agregar todos los elementos al grupo
+        barco.getChildren().addAll(
+                polygon, rect1, rect2, rect3, rect4, rect5, rect6, quadCurve,
+                line1, line2, line3,  line6, lineaHorizontalHelipuerto
+        );
+
+        return barco;
     }
+
 
 }

@@ -39,6 +39,7 @@ public class Main extends Application {
 
         Group root = Ships.destructor();
 
+
         // Crea la escena y añade el grupo
         Scene scene = new Scene(root, 800, 600); // Cambia las dimensiones según lo necesites
 
