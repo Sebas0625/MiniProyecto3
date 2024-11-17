@@ -33,8 +33,6 @@ public class Game implements Serializable {
         for (int i = 0; i < 4; i++) {
             placeShip(1, 1);
         }
-
-        machineMatrix.printMatrix();
     }
 
 
@@ -66,6 +64,7 @@ public class Game implements Serializable {
         }
     }
 
+    public int getMatrixNum(GameMatrix matrix, int row, int col){return matrix.getNumber(row, col);}
 
     public GameMatrix getPlayerMatrix(){
         return playerMatrix;

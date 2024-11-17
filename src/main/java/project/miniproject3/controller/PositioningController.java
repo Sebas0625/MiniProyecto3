@@ -44,10 +44,12 @@ public class PositioningController {
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
         fillPlayersMatrix();
+        System.out.println("Mostrando matriz del jugador:");
         game.getPlayerMatrix().printMatrix();
+        System.out.println("Mostrando matriz de la máquina:");
+        game.getMachineMatrix().printMatrix();
         serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
         WelcomeStage.closeInstance();
-        GameStage.getInstance();
         GameStage.getInstance().getGameController().setGame(game);
     }
 
@@ -175,8 +177,8 @@ public class PositioningController {
         for (Node ship : boardGrid.getChildren()){
             int row = GridPane.getRowIndex(ship) == null ? 0 : GridPane.getRowIndex(ship);
             int col = GridPane.getColumnIndex(ship) == null ? 0 : GridPane.getColumnIndex(ship);
-            int colSpan = GridPane.getColumnSpan(ship) == null ? 1 : GridPane.getColumnSpan(ship);
-            int rowSpan = GridPane.getRowSpan(ship) == null ? 1 : GridPane.getRowSpan(ship);
+            int colSpan = GridPane.getColumnSpan(ship) == null ? 0 : GridPane.getColumnSpan(ship);
+            int rowSpan = GridPane.getRowSpan(ship) == null ? 0 : GridPane.getRowSpan(ship);
             int type = colSpan == 1 ? rowSpan : colSpan;
             for (int i = row; i < row + rowSpan; i++){
                 for (int j = col; j < col + colSpan; j++){

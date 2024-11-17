@@ -26,7 +26,6 @@ public class GameMatrix implements Serializable {
                 System.out.print(anInt + " ");
             }
             System.out.println();
-
         }
     }
 }
