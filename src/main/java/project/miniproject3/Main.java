@@ -37,11 +37,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         WelcomeStage.getInstance(); // Initialize the WelcomeStage instance
 
-        Group root = Ships.frigate();
+        Group root = Ships.createFire();
 
 
         // Crea la escena y añade el grupo
-        Scene scene = new Scene(root, 800, 600); // Cambia las dimensiones según lo necesites
+        Scene scene = new Scene(root, 800, 600, true); // Cambia las dimensiones según lo necesites
 
         // Configura la ventana principal
         primaryStage.setTitle("Visualización de Figura desde FXML");
