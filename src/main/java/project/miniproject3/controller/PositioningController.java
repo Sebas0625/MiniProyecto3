@@ -25,9 +25,9 @@ public class PositioningController {
 
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
-        fillPlayersMatrix();
-        System.out.println("Mostrando matriz del jugador:");
-        game.getPlayerMatrix().printMatrix();
+        fillPlayerPositions();
+        System.out.println("Mostrando posiciones del jugador:");
+        System.out.println(game.getPlayerPositions());
         System.out.println("Mostrando matriz de la máquina:");
         game.getMachineMatrix().printMatrix();
         serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
@@ -44,6 +44,7 @@ public class PositioningController {
         for (int i = 0; i < 10; i++) {
             Group ship = ships.get(i).getShape();
             ship.setOnDragDetected(this::onDragDetected);
+
             int finalI = i;
             EventHandler<KeyEvent> keyPressedHandler = keyEvent -> {
                 if (keyEvent.getCode() == KeyCode.R) {
@@ -76,6 +77,24 @@ public class PositioningController {
         if (event.getGestureSource() != boardGrid && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
+        Group draggedShip = (Group) event.getGestureSource();
+        int col = (int) (event.getX() / (boardGrid.getWidth() / boardGrid.getColumnCount()));
+        int row = (int) (event.getY() / (boardGrid.getHeight() / boardGrid.getRowCount()));
+
+        int span = 0;
+        boolean horizontal = false;
+
+        for (AShip ship : ships) {
+            if (ship.getShape() == draggedShip) {
+                span = ship.getSpan();
+                horizontal = ship.isHorizontal();
+            }
+        }
+
+        boardGrid.setOnDragEntered(mouseEvent -> {
+
+        });
+
         event.consume();
     }
 
@@ -98,7 +117,7 @@ public class PositioningController {
                 }
             }
 
-            if (canPlaceShip(boardGrid, col, row, span, horizontal)) {
+            if (canPlaceShip(draggedShip, col, row, span, horizontal)) {
                 boardGrid.getChildren().remove(draggedShip);
 
                 GridPane.setColumnIndex(draggedShip, col);
@@ -115,74 +134,81 @@ public class PositioningController {
         event.consume();
     }
 
-    private boolean canPlaceShip(GridPane gridPane, int col, int row, int span, boolean horizontal) {
+    private boolean canPlaceShip(Group shape, int col, int row, int span, boolean horizontal) {
         for (int i = 0; i < span; i++) {
             int checkCol = horizontal ? col + i : col;
             int checkRow = horizontal ? row : row + i;
 
-            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(boardGrid, checkCol, checkRow)) {
+            if (checkCol >= boardGrid.getColumnCount() || checkRow >= boardGrid.getRowCount() || isCellOccupied(shape, checkCol, checkRow)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isCellOccupied(GridPane grid, int col, int row) {
-        for (Node child : grid.getChildren()) {
-            Integer childCol = GridPane.getColumnIndex(child);
-            Integer childRow = GridPane.getRowIndex(child);
+    private boolean isCellOccupied(Group shape, int col, int row) {
+        for (Node child : boardGrid.getChildren()) {
+            if (shape != child){
+                Integer childCol = GridPane.getColumnIndex(child);
+                Integer childRow = GridPane.getRowIndex(child);
 
-            if (childCol == null) childCol = 0;
-            if (childRow == null) childRow = 0;
+                if (childCol == null) childCol = -1;
+                if (childRow == null) childRow = -1;
 
-            int colSpan = GridPane.getColumnSpan(child) == null ? 1 : GridPane.getColumnSpan(child);
-            int rowSpan = GridPane.getRowSpan(child) == null ? 1 : GridPane.getRowSpan(child);
+                int colSpan = GridPane.getColumnSpan(child) == null ? 1 : GridPane.getColumnSpan(child);
+                int rowSpan = GridPane.getRowSpan(child) == null ? 1 : GridPane.getRowSpan(child);
 
-            if (col >= childCol && col < childCol + colSpan &&
-                    row >= childRow && row < childRow + rowSpan) {
-                return true;
+                if (col >= childCol && col < childCol + colSpan &&
+                        row >= childRow && row < childRow + rowSpan) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public void fillPlayersMatrix(){
+    public void fillPlayerPositions(){
+        int i = 0;
         for (Node ship : boardGrid.getChildren()){
-            int row = GridPane.getRowIndex(ship) == null ? 0 : GridPane.getRowIndex(ship);
-            int col = GridPane.getColumnIndex(ship) == null ? 0 : GridPane.getColumnIndex(ship);
-            int colSpan = GridPane.getColumnSpan(ship) == null ? 0 : GridPane.getColumnSpan(ship);
-            int rowSpan = GridPane.getRowSpan(ship) == null ? 0 : GridPane.getRowSpan(ship);
+            game.getPlayerPositions().add(new ArrayList<>());
+
+            int row = GridPane.getRowIndex(ship) == null ? -1 : GridPane.getRowIndex(ship);
+            int col = GridPane.getColumnIndex(ship) == null ? -1 : GridPane.getColumnIndex(ship);
+            int colSpan = GridPane.getColumnSpan(ship) == null ? -1 : GridPane.getColumnSpan(ship);
+            int rowSpan = GridPane.getRowSpan(ship) == null ? -1 : GridPane.getRowSpan(ship);
             int type = colSpan == 1 ? rowSpan : colSpan;
-            for (int i = row; i < row + rowSpan; i++){
-                for (int j = col; j < col + colSpan; j++){
-                    game.getPlayerMatrix().setNumber(i, j, type);
-                }
-            }
+
+            game.getPlayerPositions().get(i).add(row);
+            game.getPlayerPositions().get(i).add(col);
+            game.getPlayerPositions().get(i).add(rowSpan);
+            game.getPlayerPositions().get(i).add(colSpan);
+            game.getPlayerPositions().get(i).add(type);
+            i++;
         }
     }
 
     private void rotateShip(AShip ship) {
         Group shape = ship.getShape();
-        int col = GridPane.getColumnIndex(shape) == null ? 0 : GridPane.getColumnIndex(shape);
-        int row = GridPane.getRowIndex(shape) == null ? 0 : GridPane.getRowIndex(shape);
-        boolean isHorizontal = ship.isHorizontal();
         int span = ship.getSpan();
+        int col = GridPane.getColumnIndex(shape);
+        int row = GridPane.getRowIndex(shape);
 
-        boolean newIsHorizontal = !isHorizontal;
+        boolean horizontal = ship.isHorizontal();
+        int colSpan = horizontal ? 1 : span;
+        int rowSpan = horizontal ? span : 1;
 
-        int newColSpan = newIsHorizontal ? span : 1;
-        int newRowSpan = newIsHorizontal ? 1 : span;
+        boardGrid.getChildren().remove(shape);
 
-        if (col + newColSpan < boardGrid.getColumnCount() &&
-                row + newRowSpan < boardGrid.getRowCount() &&
-                isCellOccupied(boardGrid, col, row)) {
+        if (canPlaceShip(shape, col, row, span, !horizontal)){
+            ship.setHorizontal(!horizontal);
+            GridPane.setColumnSpan(shape, colSpan);
+            GridPane.setRowSpan(shape, rowSpan);
+            boardGrid.add(shape, col, row);
 
-            GridPane.setColumnSpan(shape, newColSpan);
-            GridPane.setRowSpan(shape, newRowSpan);
-            ship.setHorizontal(newIsHorizontal);
-            shape.setRotate(newIsHorizontal ? 0 : 90);
-        } else {
-            System.out.println("No se puede rotar el barco aquí.");
+            shape.setRotate(horizontal ? 0 : 90);
+        } else{
+            System.out.println("no se puede colocar");
+            boardGrid.add(shape, col, row);
         }
     }
 

@@ -1,42 +1,45 @@
 package project.miniproject3.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Game implements Serializable {
     private final Random rand;
-    private final GameMatrix playerMatrix;
     private final GameMatrix machineMatrix;
+    private final GameMatrix playerMatrix;
+    private final ArrayList<ArrayList<Integer>> playerPositions;
 
     public Game(){
         rand = new Random();
         machineMatrix = new GameMatrix();
         playerMatrix = new GameMatrix();
+        playerPositions = new ArrayList<>();
         fillMachineMatrix();
     }
 
     public void fillMachineMatrix() {
         // Carrier
-        placeShip(4, 4);
+        placeRandomShip(4, 4);
 
         // Submarines
         for (int i = 0; i < 2; i++) {
-            placeShip(3, 3);
+            placeRandomShip(3, 3);
         }
 
         // Destroyers
         for (int i = 0; i < 3; i++) {
-            placeShip(2, 2);
+            placeRandomShip(2, 2);
         }
 
         // Frigates
         for (int i = 0; i < 4; i++) {
-            placeShip(1, 1);
+            placeRandomShip(1, 1);
         }
     }
 
 
-    private void placeShip(int shipSize, int shipType) {
+    private void placeRandomShip(int shipSize, int shipType) {
         boolean validPlacement;
         int aux1, aux2, directionaux;
 
@@ -64,13 +67,21 @@ public class Game implements Serializable {
         }
     }
 
-    public int getMatrixNum(GameMatrix matrix, int row, int col){return matrix.getNumber(row, col);}
+    public void placeShip(int row, int col, int rowSpan, int colSpan, int type){
+        for (int i = row; i < row + rowSpan; i++){
+            for (int j = col; j < col + colSpan; j++){
+                playerMatrix.setNumber(row, col, type);
+            }
+        }
+    }
 
-    public GameMatrix getPlayerMatrix(){
-        return playerMatrix;
+    public ArrayList<ArrayList<Integer>> getPlayerPositions(){
+        return playerPositions;
     }
 
     public GameMatrix getMachineMatrix(){
         return machineMatrix;
     }
+
+    public GameMatrix getPlayerMatrix(){ return playerMatrix; }
 }
