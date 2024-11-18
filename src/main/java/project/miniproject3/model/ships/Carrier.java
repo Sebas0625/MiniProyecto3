@@ -1,7 +1,7 @@
 package project.miniproject3.model.ships;
 
-import javafx.scene.shape.Polygon;
+import javafx.scene.Group;
 
 public class Carrier extends AShip {
-    public Carrier(Polygon shape, boolean orientation){ super(shape, 4, orientation); }
+    public Carrier(Group shape, boolean orientation){ super(shape, 4, orientation); }
 }

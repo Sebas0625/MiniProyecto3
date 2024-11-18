@@ -1,9 +1,9 @@
 package project.miniproject3.model.ships;
 
-import javafx.scene.shape.Polygon;
+import javafx.scene.Group;
 
 public class Frigate extends AShip {
-    public Frigate(Polygon shape, boolean orientation) {
+    public Frigate(Group shape, boolean orientation) {
         super(shape, 1, orientation);
     }
 }

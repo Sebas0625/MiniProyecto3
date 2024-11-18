@@ -6,10 +6,9 @@ import javafx.scene.shape.*;
 
 public class Ships {
 
-    public static Group aircraft() {
+    public static Group carrier() {
         Group group = new Group();
 
-        // Polygons
         Polygon polygon1 = new Polygon(0.0, 146.5, 0.0, 0.0, 25.0, 0.0, 25.0, 11.5, 40.0, 36.5, 40.0, 104.0, 29.5, 130.25, 29.5, 160.0, 6.75, 160.0);
         polygon1.setLayoutX(187.0);
         polygon1.setLayoutY(120.0);
@@ -83,7 +82,6 @@ public class Ships {
         rectangle8.setStroke(Color.BLACK);
         group.getChildren().add(rectangle8);
 
-        // Lines
         for (double layoutX : new double[]{287.0, 307.0}) {
             for (double layoutY : new double[]{124.0, 136.0, 147.0, 158.0, 169.0, 180.0, 192.0, 203.0, 215.0, 227.0, 239.0, 251.0}) {
                 Line line = new Line(-100.0, 0.0, -100.0, 7.5);
@@ -100,7 +98,6 @@ public class Ships {
         line13.setStroke(Color.RED);
         group.getChildren().add(line13);
 
-        // Lines with specific colors
         Line yellowLine1 = new Line(-100.0, 0.0, -100.0, 57.25);
         yellowLine1.setLayoutX(314.0);
         yellowLine1.setLayoutY(164.0);
@@ -119,7 +116,6 @@ public class Ships {
         whiteLine.setStroke(Color.WHITE);
         group.getChildren().add(whiteLine);
 
-        // Gray lines
         Line grayLine1 = new Line(-100.0, 0.0, -100.0, 7.5);
         grayLine1.setLayoutX(309.0);
         grayLine1.setLayoutY(270.0);
@@ -343,9 +339,7 @@ public class Ships {
                     setStroke(Color.web("#3f3f3f"));
                     setStrokeWidth(4.0);
                 }},
-                // (Se omiten otras líneas para simplificar; este es el resto del código base proporcionado)
 
-                // Hélice en la parte inferior
                 new Line(-100.0, 0, -100.0, 6.5) {{
                     setLayoutX(257.0);
                     setLayoutY(261.0);
@@ -357,7 +351,6 @@ public class Ships {
                     setStrokeWidth(2.0);
                 }},
 
-                // Aletas laterales con líneas blancas
                 new Line(-93.0, 0, -100.0, 0) {{
                     setLayoutX(240.0);
                     setLayoutY(249.0);
@@ -371,7 +364,6 @@ public class Ships {
                     setStrokeWidth(2.0);
                 }},
 
-                // Primera arma en la parte superior
                 new Polygon(94.0, 28.25, 94.0, 17.25, 103.0, 17.25, 103.0, 28.25, 101.5, 28.25, 101.5, 38.5, 100.0, 38.5, 100.0, 50.25, 97.5, 50.25, 97.5, 38.5, 95.5, 38.5, 95.5, 28.25) {{
                     setFill(Color.web("#848484"));
                     setStroke(Color.BLACK);
@@ -380,8 +372,6 @@ public class Ships {
                     setLayoutY(178.0);
                 }},
 
-
-                // Línea blanca central en el cuerpo del submarino
                 new Line(-85.5, 0, -102.75, 0) {{
                     setLayoutX(251.0);
                     setLayoutY(173.0);
@@ -394,10 +384,9 @@ public class Ships {
     }
 
 
-    public static Group destructor() {
+    public static Group destroyer() {
         Group barco = new Group();
 
-        // Polígono principal del barco
         Polygon polygon = new Polygon(
                 180.0, 103.5, 180.0, 116.5, 180.0, 116.5, 180.0, 126.0, 182.5, 126.0,
                 182.5, 161.5, 180.0, 161.5, 180.0, 167.5, 175.5, 167.5, 170.0, 167.5,
@@ -410,7 +399,6 @@ public class Ships {
         polygon.setLayoutX(75.0);
         polygon.setLayoutY(30.0);
 
-        // Rectángulos
         Rectangle rect1 = new Rectangle(245.0, 190.0, 10.0, 9.0);
         rect1.setFill(Color.web("#6a6a6a"));
         rect1.setStroke(Color.BLACK);
@@ -449,7 +437,6 @@ public class Ships {
         rect6.setRotate(90.0);
         rect6.setStrokeWidth(0.3);
 
-        // Curva cuadrática
         QuadCurve quadCurve = new QuadCurve(
                 4.25, 27.5, // Inicio
                 10.25, 6.5, // Control
@@ -460,7 +447,6 @@ public class Ships {
         quadCurve.setFill(Color.web("#6a6a6a"));
         quadCurve.setStroke(Color.BLACK);
 
-        // Líneas
         Line line1 = new Line(-100.0, 4.25, -100.0, 4.25);
         line1.setLayoutX(348.0);
         line1.setLayoutY(193.0);
@@ -483,7 +469,6 @@ public class Ships {
         line6.setStroke(Color.WHITE);
         line6.setStrokeWidth(4.0);
 
-        // Línea blanca de abajo
         Line lineaHorizontalHelipuerto = new Line(98, 160, 102, 160);
         lineaHorizontalHelipuerto.setStroke(Color.WHITE);
         lineaHorizontalHelipuerto.setStrokeWidth(2);
@@ -491,8 +476,6 @@ public class Ships {
         lineaHorizontalHelipuerto.setLayoutY(35.0);
 
 
-
-        // Agregar todos los elementos al grupo
         barco.getChildren().addAll(
                 polygon, rect1, rect2, rect3, rect4, rect5, rect6, quadCurve,
                 line1, line2, line3,  line6, lineaHorizontalHelipuerto
@@ -504,7 +487,6 @@ public class Ships {
     public static Group frigate() {
         Group group = new Group();
 
-        // Proa (Polígono superior)
         Polygon proa = new Polygon();
         proa.getPoints().addAll(
                 103.0, 10.75,
@@ -520,7 +502,6 @@ public class Ships {
         proa.setLayoutX(99.0);
         proa.setLayoutY(129.0);
 
-        // Parte trasera (Polígono)
         Polygon parteTrasera = new Polygon();
         parteTrasera.getPoints().addAll(
                 231.5, 77.25,
@@ -533,12 +514,10 @@ public class Ships {
         parteTrasera.setLayoutX(-30.0);
         parteTrasera.setLayoutY(67.0);
 
-        // Círculos azules (ventanas)
         Circle ventana1 = new Circle(206.0, 147.0, 2.0);
         ventana1.setFill(Color.DODGERBLUE);
         ventana1.setStroke(Color.BLACK);
         ventana1.setStrokeWidth(0.6);
-
 
         Circle ventana2 = new Circle(211.0, 147.0, 2.0);
         ventana2.setFill(Color.DODGERBLUE);
@@ -550,22 +529,18 @@ public class Ships {
         ventana3.setStroke(Color.BLACK);
         ventana3.setStrokeWidth(0.6);
 
-        // Rectángulo gris (estructura central)
         Rectangle estructuraCentral = new Rectangle(206.5, 133.0, 9.0, 8.0);
         estructuraCentral.setArcHeight(5.0);
         estructuraCentral.setArcWidth(2.0);
         estructuraCentral.setFill(Color.web("#757575"));
         estructuraCentral.setStroke(Color.BLACK);
 
-        // Línea vertical (detalle inferior)
         Line lineaVertical = new Line(-100.0,0.0 , -93.25, 0.0);
         lineaVertical.setRotate(90.0);
         lineaVertical.setStrokeWidth(2.0);
         lineaVertical.setLayoutX(307.8);
         lineaVertical.setLayoutY(131.0);
 
-
-        // Agregar todos los elementos al grupo
         group.getChildren().addAll(
                 proa,
                 parteTrasera,
@@ -578,7 +553,4 @@ public class Ships {
 
         return group;
     }
-
-
-
 }

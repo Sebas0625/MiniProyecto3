@@ -4,10 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Polygon;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.GameMatrix;
+import project.miniproject3.model.Ships;
 import project.miniproject3.view.GameStage;
 
 import java.io.IOException;
@@ -86,6 +88,8 @@ public class GameController implements Initializable {
         printPositions(MPosArray);
         savePositions(PPosArray, game.getPlayerMatrix());
         printPositions(PPosArray);
+
+        showPlayerShips();
     }
 
     public void showPlayerShips(){
@@ -94,13 +98,24 @@ public class GameController implements Initializable {
         for(int i = 0; i < 4 ; i++){
             int shipSpan = 4 - i;
             int typeShipCount = i + 1;
-            for (int k = 0; k < i; k++){
-                for (int j = 0; j < shipSpan; j++){
-                    position = PPosArray.get(i).get(j);
-                    row = position[0];
-                    col = position[1];
-                    playerBoard.add(new Polygon(), row, col);
+            for (int j = 0; j < typeShipCount; j++){
+                int k = j * shipSpan;
+                Group shape = new Group();
+                switch (shipSpan){
+                    case 1: shape = Ships.frigate(); break;
+                    case 2: shape = Ships.destroyer(); break;
+                    case 3: shape = Ships.submarine(); break;
+                    case 4: shape = Ships.carrier(); break;
                 }
+                if (!Objects.equals(PPosArray.get(i).get(k)[0], PPosArray.get(i).get(k + 1)[0])){
+                    GridPane.setRowSpan(shape, shipSpan);
+                } else{
+                    GridPane.setColumnSpan(shape, shipSpan);
+                }
+                position = PPosArray.get(i).get(k);
+                row = position[0];
+                col = position[1];
+                playerBoard.add(shape, row, col);
             }
         }
     }

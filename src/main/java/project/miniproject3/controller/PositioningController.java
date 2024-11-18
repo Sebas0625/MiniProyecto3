@@ -1,10 +1,10 @@
 package project.miniproject3.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Polygon;
 import project.miniproject3.model.*;
 import project.miniproject3.model.ships.*;
 import project.miniproject3.view.GameStage;
@@ -19,26 +19,8 @@ public class PositioningController {
     @FXML
     private GridPane boardGrid;
     @FXML
-    private Polygon carrier;
-    @FXML
-    private Polygon submarine1;
-    @FXML
-    private Polygon submarine2;
-    @FXML
-    private Polygon destroyer1;
-    @FXML
-    private Polygon destroyer2;
-    @FXML
-    private Polygon destroyer3;
-    @FXML
-    private Polygon frigate1;
-    @FXML
-    private Polygon frigate2;
-    @FXML
-    private Polygon frigate3;
-    @FXML
-    private Polygon frigate4;
-    private ArrayList<AShip> ships = new ArrayList<>();
+    private GridPane shipsGrid;
+    private final ArrayList<AShip> ships = new ArrayList<>();
     private SerializableFileHandler serializableFileHandler;
 
     @FXML
@@ -57,19 +39,10 @@ public class PositioningController {
     public void initialize() {
         serializableFileHandler = new SerializableFileHandler();
 
-        ships.add(new Carrier(carrier, false));
-        ships.add(new Submarine(submarine1, false));
-        ships.add(new Submarine(submarine2, false));
-        ships.add(new Destroyer(destroyer1, false));
-        ships.add(new Destroyer(destroyer2, false));
-        ships.add(new Destroyer(destroyer3, true));
-        ships.add(new Frigate(frigate1, false));
-        ships.add(new Frigate(frigate2, false));
-        ships.add(new Frigate(frigate3, false));
-        ships.add(new Frigate(frigate4, false));
+        initializeShipsGrid();
 
         for (int i = 0; i < 10; i++) {
-            Polygon ship = ships.get(i).getShape();
+            Group ship = ships.get(i).getShape();
             ship.setOnDragDetected(this::onDragDetected);
             int finalI = i;
             EventHandler<KeyEvent> keyPressedHandler = keyEvent -> {
@@ -91,7 +64,7 @@ public class PositioningController {
     }
 
     private void onDragDetected(MouseEvent event) {
-        Polygon shape = (Polygon) event.getSource();
+        Group shape = (Group) event.getSource();
         Dragboard dragboard = shape.startDragAndDrop(TransferMode.MOVE);
         var content = new ClipboardContent();
         content.putString("Ship");
@@ -111,7 +84,7 @@ public class PositioningController {
         boolean success = false;
 
         if (db.hasString()) {
-            Polygon draggedShip = (Polygon) event.getGestureSource();
+            Group draggedShip = (Group) event.getGestureSource();
             int col = (int) (event.getX() / (boardGrid.getWidth() / boardGrid.getColumnCount()));
             int row = (int) (event.getY() / (boardGrid.getHeight() / boardGrid.getRowCount()));
 
@@ -147,15 +120,15 @@ public class PositioningController {
             int checkCol = horizontal ? col + i : col;
             int checkRow = horizontal ? row : row + i;
 
-            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(checkCol, checkRow)) {
+            if (checkCol >= gridPane.getColumnCount() || checkRow >= gridPane.getRowCount() || isCellOccupied(boardGrid, checkCol, checkRow)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isCellOccupied(int col, int row) {
-        for (Node child : boardGrid.getChildren()) {
+    private boolean isCellOccupied(GridPane grid, int col, int row) {
+        for (Node child : grid.getChildren()) {
             Integer childCol = GridPane.getColumnIndex(child);
             Integer childRow = GridPane.getRowIndex(child);
 
@@ -189,7 +162,7 @@ public class PositioningController {
     }
 
     private void rotateShip(AShip ship) {
-        Polygon shape = ship.getShape();
+        Group shape = ship.getShape();
         int col = GridPane.getColumnIndex(shape) == null ? 0 : GridPane.getColumnIndex(shape);
         int row = GridPane.getRowIndex(shape) == null ? 0 : GridPane.getRowIndex(shape);
         boolean isHorizontal = ship.isHorizontal();
@@ -202,7 +175,7 @@ public class PositioningController {
 
         if (col + newColSpan < boardGrid.getColumnCount() &&
                 row + newRowSpan < boardGrid.getRowCount() &&
-                isCellOccupied(col, row)) {
+                isCellOccupied(boardGrid, col, row)) {
 
             GridPane.setColumnSpan(shape, newColSpan);
             GridPane.setRowSpan(shape, newRowSpan);
@@ -211,5 +184,41 @@ public class PositioningController {
         } else {
             System.out.println("No se puede rotar el barco aquí.");
         }
+    }
+
+    public void initializeShipsGrid(){
+        Carrier carrier = new Carrier(Ships.carrier(), false);
+        Submarine submarine1 = new Submarine(Ships.submarine(), false);
+        Submarine submarine2 = new Submarine(Ships.submarine(), false);
+        Destroyer destroyer1 = new Destroyer(Ships.destroyer(), false);
+        Destroyer destroyer2 = new Destroyer(Ships.destroyer(), false);
+        Destroyer destroyer3 = new Destroyer(Ships.destroyer(), true);
+        Frigate frigate1 = new Frigate(Ships.frigate(), false);
+        Frigate frigate2 = new Frigate(Ships.frigate(), false);
+        Frigate frigate3 = new Frigate(Ships.frigate(), false);
+        Frigate frigate4 = new Frigate(Ships.frigate(), false);
+
+        ships.add(carrier);
+        ships.add(submarine1);
+        ships.add(submarine2);
+        ships.add(destroyer1);
+        ships.add(destroyer2);
+        ships.add(destroyer3);
+        ships.add(frigate1);
+        ships.add(frigate2);
+        ships.add(frigate3);
+        ships.add(frigate4);
+
+        shipsGrid.add(carrier.getShape(), 0, 0, 1, 4);
+        shipsGrid.add(submarine1.getShape(), 1, 0, 1, 3);
+        shipsGrid.add(submarine2.getShape(), 2, 0, 1, 3);
+        shipsGrid.add(destroyer1.getShape(), 3, 0, 1, 2);
+        shipsGrid.add(destroyer2.getShape(), 4, 0, 1, 2);
+        destroyer3.getShape().setRotate(90);
+        shipsGrid.add(destroyer3.getShape(), 3, 2, 2, 1);
+        shipsGrid.add(frigate1.getShape(), 1, 3);
+        shipsGrid.add(frigate2.getShape(), 2, 3);
+        shipsGrid.add(frigate3.getShape(), 3, 3);
+        shipsGrid.add(frigate4.getShape(), 4, 3);
     }
 }

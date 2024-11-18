@@ -1,15 +1,16 @@
 package project.miniproject3.model.ships;
 
+import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
 
 public class AShip implements IShip {
-    private final Polygon shape;
+    private final Group shape;
     private final int span;
     private int impacts;
     private boolean horizontal;
     private boolean isSunken;
 
-    public AShip(Polygon shape, int span, boolean horizontal){
+    public AShip(Group shape, int span, boolean horizontal){
         this.shape = shape;
         this.span = span;
         this.horizontal = horizontal;
@@ -23,7 +24,7 @@ public class AShip implements IShip {
     }
 
     @Override
-    public Polygon getShape() {
+    public Group getShape() {
         return shape;
     }
 
