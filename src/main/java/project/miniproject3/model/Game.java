@@ -68,9 +68,9 @@ public class Game implements Serializable {
     }
 
     public void placeShip(int row, int col, int rowSpan, int colSpan, int type){
-        for (int i = row; i < row + rowSpan; i++){
-            for (int j = col; j < col + colSpan; j++){
-                playerMatrix.setNumber(row, col, type);
+        for (int i = row; i < row + colSpan; i++){
+            for (int j = col; j < col + rowSpan; j++){
+                playerMatrix.setNumber(i, j, type);
             }
         }
     }
