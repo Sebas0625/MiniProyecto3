@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.shape.Polygon?>
+
+<Group fx:id="fireGroup" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <!-- Llama externa (roja, más picos hacia arriba con puntos adicionales) -->
+   <Polygon fill="RED" points="12.0, 19.0, 12.0, 26.0, 14.0, 32.0, 12.0, 28.0, 12.0, 23.0, 14.0, 19.0, 16.0, 16.75, 18.5, 14.25, 21.5, 12.75, 25.0, 10.5, 28.5, 10.5, 25.0, 14.25, 23.25, 16.75, 23.25, 21.5, 25.0, 24.5, 28.5, 26.0, 28.5, 21.5, 30.0, 24.5, 32.25, 28.0, 32.25, 32.0, 32.25, 38.5, 30.0, 42.0, 25.0, 44.0, 18.5, 44.0, 12.0, 44.0, 8.0, 42.0, 4.0, 38.5, 2.25, 32.0, 4.0, 28.0, 6.0, 24.5, 8.0, 21.5" />
+
+         <!-- Llama intermedia (naranja, con más picos hacia arriba) -->
+   <Polygon fill="ORANGE" layoutX="-2.0" layoutY="11.0" points="20.0, 30.0, 14.0, 26.0, 9.75, 23.75, 9.75, 20.5, 9.75, 16.0, 11.75, 14.0, 14.0, 18.0, 16.0, 14.0, 22.0, 6.5, 22.0, 10.0, 22.0, 14.0, 26.0, 16.0, 29.5, 18.0, 29.5, 22.0, 27.5, 26.0, 24.5, 27.75, 20.0, 30.0" />
+
+         <!-- Llama interna (amarilla, con picos definidos) -->
+   <Polygon fill="YELLOW" layoutX="-2.0" layoutY="10.0" points="20.0,26.0, 18.0,24.0, 16.0,22.0, 18.0,20.0,                                   20.0,18.0, 22.0,20.0, 24.0,22.0, 22.0,24.0,                                   20.0,26.0" />
+</Group>
