@@ -29,6 +29,7 @@
 
 .button2{
     -fx-font-size: 20px;
+    -fx-background-image: url("../images/button.png") format("truetype");
 }
 
 .button:hover {
