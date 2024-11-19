@@ -30,16 +30,16 @@ public class GameController implements Initializable {
             int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
             int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
 
-            if (game.getPlayerMatrix().getNumber(row, col) != 0){
-                game.getPlayerMatrix().setNumber(row, col, 6);
+            if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5){
+                game.getMachineMatrix().setNumber(row, col, 6);
                 impactsCounter++;
+                machineBoard.add(Ships.createFire(), col, row);
                 if (isGameFinished()){
                     finishGame();
                 }
-                // evento de impacto contra barco
             } else{
-                game.getPlayerMatrix().setNumber(row, col, 5);
-                // evento de impacto contra el agua
+                game.getMachineMatrix().setNumber(row, col, 5);
+                machineBoard.add(Ships.drawX(), col, row);
             }
         });
     }
