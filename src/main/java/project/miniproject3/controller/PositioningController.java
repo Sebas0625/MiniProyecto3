@@ -25,6 +25,7 @@ public class PositioningController {
 
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
+
         fillPlayerPositions();
         System.out.println("Mostrando posiciones del jugador:");
         System.out.println(game.getPlayerPositions());

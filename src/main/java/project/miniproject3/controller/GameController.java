@@ -29,14 +29,16 @@ public class GameController implements Initializable {
 
             int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
             int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
-
-            if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5){
+            //Le pega
+            if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5 & game.getPlayerMatrix().getNumber(row, col) != 6) {
                 game.getMachineMatrix().setNumber(row, col, 6);
                 impactsCounter++;
                 machineBoard.add(Ships.createFire(), col, row);
+
                 if (isGameFinished()){
                     finishGame();
                 }
+                //Falla
             } else{
                 game.getMachineMatrix().setNumber(row, col, 5);
                 machineBoard.add(Ships.drawX(), col, row);
