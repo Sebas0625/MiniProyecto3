@@ -115,9 +115,12 @@ public class GameController implements Initializable {
                 default -> shape;
             };
             if (colSpan != 1) shape.setRotate(90);
-            if (!(row == -1 || col == -1 || rowSpan == -1 || colSpan == -1)) playerBoard.add(shape, col, row, colSpan, rowSpan);
-            game.placeShip(row, col, row, colSpan, type);
+            if (!(row == -1 || col == -1 || rowSpan == -1 || colSpan == -1)){
+                playerBoard.add(shape, col, row, colSpan, rowSpan);
+                game.placeShip(row, col, rowSpan, colSpan, type);
+            }
         }
+        game.getPlayerMatrix().printMatrix();
     }
 
     public boolean isGameFinished(){
