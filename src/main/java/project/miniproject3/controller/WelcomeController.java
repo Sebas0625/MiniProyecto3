@@ -15,9 +15,13 @@ import project.miniproject3.model.Game;
 import project.miniproject3.model.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.animation.*;
+
+import javax.print.attribute.standard.Media;
+import javax.sound.sampled.*;
 
 public class WelcomeController {
     @FXML
@@ -60,6 +64,7 @@ public class WelcomeController {
         transition.setOnFinished(event1 -> charactersBox.setVisible(false));
         transition.play();
     }
+
 
     @FXML
     public void handlePlay(ActionEvent event) throws IOException {
@@ -112,6 +117,19 @@ public class WelcomeController {
             charactersBox.setTranslateX(-charactersBox.getWidth());
             transition.setToX(0);
             transition.play();
+        }
+    }
+
+
+
+    public void bSound(){
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/sounds/button-3.mp3").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Error al reproducir el sonido.");
         }
     }
 }

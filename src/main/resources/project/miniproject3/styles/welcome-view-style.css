@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url("../fonts/ArcaneNine.ttf");
+}
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+
 .root {
     -fx-background-image: url("../images/background.png") format("truetype");
     -fx-background-size: cover;
@@ -5,6 +14,7 @@
 }
 
 #title{
+    -fx-font-family: 'UnifrakturMaguntia', serif;
     -fx-font-weight: bold;
     -fx-text-fill: rgba(226, 177, 92);
 }
@@ -18,11 +28,25 @@
 }
 
 .button1{
-    -fx-font-size: 30px;
+    -fx-font-size: 18px;
+    -fx-text-fill: black;
+    -fx-font-family: 'Orbitron', sans-serif;
+    -fx-background-image: url('../images/button-1.png'); /* Ruta de tu imagen */
+    -fx-background-size: 1500,65;
+    -fx-background-repeat: no-repeat; /* Evita que la imagen se repita */
+    -fx-background-position: center; /* Centra la imagen en el botón */
+    -fx-padding: 0;
 }
 
 .button2{
-    -fx-font-size: 20px;
+    -fx-font-size: 12px;
+    -fx-text-fill: black;
+    -fx-font-family: 'Orbitron', sans-serif;
+    -fx-background-image: url('../images/button-2.png'); /* Ruta de tu imagen */
+    -fx-background-size: 150,65;
+    -fx-background-repeat: no-repeat; /* Evita que la imagen se repita */
+    -fx-background-position: center; /* Centra la imagen en el botón */
+    -fx-padding: 0;
 }
 
 .button:hover {
@@ -30,6 +54,11 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-effect: dropshadow(gaussian, rgba(255, 241, 216, 0.5), 15, 0.7, 0, 0);
+}
+.title2 {
+    -fx-font-family: 'UnifrakturMaguntia', serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
 }
 
 .imageView:hover {
