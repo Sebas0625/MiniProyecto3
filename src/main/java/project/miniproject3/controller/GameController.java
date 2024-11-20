@@ -98,14 +98,20 @@ public class GameController implements Initializable {
         pause.setOnFinished(event -> {
             int rand1 = 0;
             int rand2 = 0;
-
+            try{
             do {
+
+
+
                 rand1 = rand.nextInt(10);
                 rand2 = rand.nextInt(10);
                 System.out.println(rand1);
                 System.out.println(rand2);
-            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
 
+            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("Fuera del indice de la máquina " +e.getMessage());
+            }
             if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
                 game.getPlayerMatrix().setNumber(rand1, rand2, 5);
                 playerBoard.add(Ships.drawX(), rand2, rand1);
