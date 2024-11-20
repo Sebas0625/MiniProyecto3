@@ -6,14 +6,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ImageInput;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import project.miniproject3.model.FileHandling.PlainTextFileHandler;
+import javafx.scene.shape.Rectangle;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.model.ships.Ships;
 import project.miniproject3.view.GameStage;
 
+import java.io.File;
+import javax.sound.sampled.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -47,8 +53,8 @@ public class GameController implements Initializable {
                 double y = event.getY();
                 rand= new Random();
 
-                int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
-                int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
+            int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
+            int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
 
                 if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getMachineMatrix().getNumber(row, col) != 5 & game.getMachineMatrix().getNumber(row, col) != 6) {
                     game.getMachineMatrix().setNumber(row, col, 6);
@@ -177,4 +183,31 @@ public class GameController implements Initializable {
             System.out.println("El archivo no existe.");
         }
     }
+
+    public void reproducirSonido(String nombreSonido, float volumen){
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
+            if (volume != null) {
+                volume.setValue(volumen);
+            }
+
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Error al reproducir el sonido.");
+        }
+    }
+
+    public void bSound(){
+        reproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
+    }
+    public void startSound(){
+        reproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
+
 }

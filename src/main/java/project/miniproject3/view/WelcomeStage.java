@@ -30,10 +30,12 @@ public class WelcomeStage extends Stage {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         this.welcomeController = loader.getController();
+        welcomeController.playBackgroundSound("src/main/resources/project/miniproject3/sounds/backgroundSound.wav", -20);
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
         //getIcons().add(new Image(String.valueOf(getClass().getResource(""))));
         setScene(scene);
         setTitle("BattleShip");
+        getIcons().add(new Image(getClass().getResourceAsStream("/project/miniproject3/images/icon.png")));
         setResizable(false);
         setOnCloseRequest(windowEvent -> {
             windowEvent.consume();
