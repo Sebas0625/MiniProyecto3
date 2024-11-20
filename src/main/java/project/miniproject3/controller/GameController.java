@@ -15,6 +15,8 @@ import java.util.*;
 
 public class GameController implements Initializable {
     Game game;
+
+    Random rand;
     @FXML
     GridPane playerBoard;
     @FXML
@@ -26,6 +28,7 @@ public class GameController implements Initializable {
         machineBoard.setOnMouseClicked(event -> {
             double x = event.getX();
             double y = event.getY();
+            rand= new Random();
 
             int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
             int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
@@ -42,6 +45,7 @@ public class GameController implements Initializable {
             } else{
                 game.getMachineMatrix().setNumber(row, col, 5);
                 machineBoard.add(Ships.drawX(), col, row);
+                machineTurn();
             }
         });
     }
@@ -54,6 +58,27 @@ public class GameController implements Initializable {
     public void setGame(Game game){
         this.game = game;
         showPlayerShips();
+    }
+
+    public void machineTurn(){
+
+        int rand1=0;
+        int rand2=0;
+
+        do{
+            rand1=rand.nextInt(10);
+            rand2=rand.nextInt(10);
+            System.out.println(rand1);
+            System.out.println(rand2);
+        }while (game.getPlayerMatrix().getNumber(rand1, rand2) ==5 || game.getPlayerMatrix().getNumber(rand1, rand2) ==6);
+
+        if(game.getPlayerMatrix().getNumber(rand1, rand2) ==0){
+            game.getPlayerMatrix().setNumber(rand1,rand2,5);
+        }
+        else {game.getPlayerMatrix().setNumber(rand1,rand2,6);}
+        game.getPlayerMatrix().printMatrix();
+
+
     }
 
     public void showPlayerShips(){
