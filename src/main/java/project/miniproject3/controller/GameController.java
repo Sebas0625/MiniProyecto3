@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import project.miniproject3.model.Game;
+import project.miniproject3.model.GameException;
 import project.miniproject3.model.SerializableFileHandler;
 import project.miniproject3.model.Ships;
 import project.miniproject3.view.GameStage;
@@ -48,14 +49,31 @@ public class GameController implements Initializable {
                     if (isGameFinished()){
                         finishGame();
                     }
-                } else if (game.getMachineMatrix().getNumber(row, col) != 6) {
+                } else if (game.getMachineMatrix().getNumber(row, col) != 6 && game.getMachineMatrix().getNumber(row, col) != 5) {
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
                     if (isGameFinished()){
                         finishGame();
                     }
                     machineTurn();
+
                 }
+                else {
+                    try {
+                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6) {
+                            throw new GameException("Punto ya disparado");
+                        }
+                    } catch (GameException e) {
+                        endLabel.setText(e.getMessage());
+                        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                        pause.setOnFinished(event1 -> {
+                            endLabel.setText("");
+                        });
+                        pause.play();
+
+                    }
+                }
+
                 game.getMachineMatrix().printMatrix();
             }
         });
