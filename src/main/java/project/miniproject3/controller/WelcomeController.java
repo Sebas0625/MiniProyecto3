@@ -28,6 +28,7 @@ public class WelcomeController {
 
     @FXML
     public void handlePlay(ActionEvent event) throws IOException {
+        startSound();
         Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/positioning-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -38,6 +39,7 @@ public class WelcomeController {
 
     @FXML
     public void handleContinue(ActionEvent event) throws IOException{
+        startSound();
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
         try {
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
@@ -54,16 +56,19 @@ public class WelcomeController {
 
     @FXML
     public void handleTutorial(){
+        startSound();
 
     }
 
     @FXML
     public void handleCredits(){
+        startSound();
 
     }
 
     @FXML
     public void handleCharacter(){
+        startSound();
         TranslateTransition transition = new TranslateTransition(Duration.millis(300), charactersBox);
         if (charactersBox.isVisible()) {
             transition.setToX(-charactersBox.getWidth());
@@ -77,9 +82,9 @@ public class WelcomeController {
 
 
 
-    public void bSound(){
+    public void ReproducirSonido(String nombreSonido){
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("/sounds/button-3.mp3").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -87,4 +92,12 @@ public class WelcomeController {
             System.out.println("Error al reproducir el sonido.");
         }
     }
+
+    public void bSound(){
+        ReproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav");
+    }
+    public void startSound(){
+        ReproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav");
+    }
+
 }
