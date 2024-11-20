@@ -22,19 +22,19 @@
             <Font size="89.0" />
          </font>
       </Label>
-      <Button layoutX="611.0" layoutY="418.0" maxHeight="1000.0" maxWidth="1000.0" mnemonicParsing="false" onAction="#handleCharacter" onMouseClicked="#startSound" onMouseMoved="#bSound" prefHeight="41.0" prefWidth="145.0" styleClass="button2" text="Personaje">
+      <Button layoutX="611.0" layoutY="418.0" maxHeight="1000.0" maxWidth="1000.0" mnemonicParsing="false" onAction="#handleCharacter" onMouseClicked="#startSound" onMouseEntered="#bSound" prefHeight="41.0" prefWidth="145.0" styleClass="button2" text="Personaje">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="39.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleCredits" onMouseClicked="#startSound" onMouseMoved="#bSound" prefHeight="41.0" prefWidth="145.0" styleClass="button2" text="Créditos">
+      <Button layoutX="39.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleCredits" onMouseClicked="#startSound" onMouseEntered="#bSound" prefHeight="41.0" prefWidth="145.0" styleClass="button2" text="Créditos">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
       <VBox alignment="CENTER" layoutX="252.0" layoutY="218.0" prefHeight="239.0" prefWidth="277.0">
          <children>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handlePlay" onMouseClicked="#startSound" onMouseMoved="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Jugar">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handlePlay" onMouseClicked="#startSound" onMouseEntered="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Jugar">
                <font>
                   <Font size="30.0" />
                </font>
@@ -42,7 +42,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleContinue" onMouseClicked="#startSound" onMouseMoved="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Continuar">
+            <Button mnemonicParsing="false" onAction="#handleContinue" onMouseClicked="#startSound" onMouseEntered="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Continuar">
                <font>
                   <Font size="30.0" />
                </font>
@@ -50,7 +50,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleTutorial" onMouseClicked="#startSound" onMouseMoved="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Tutorial">
+            <Button mnemonicParsing="false" onAction="#handleTutorial" onMouseClicked="#startSound" onMouseEntered="#bSound" prefHeight="65.0" prefWidth="300.0" styleClass="button1" text="Tutorial">
                <font>
                   <Font size="30.0" />
                </font>
