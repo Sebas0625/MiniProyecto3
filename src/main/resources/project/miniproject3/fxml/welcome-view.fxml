@@ -55,26 +55,36 @@
             </Button>
          </children>
       </VBox>
-      <ImageView fitHeight="198.0" fitWidth="200.0" layoutX="575.0" layoutY="198.0">
+      <ImageView fx:id="characterView" fitHeight="198.0" fitWidth="200.0" layoutX="575.0" layoutY="198.0">
          <image>
             <Image url="@../images/circle.png" />
          </image>
       </ImageView>
-      <HBox fx:id="charactersBox" layoutX="90.0" layoutY="25.0" prefHeight="271.0" prefWidth="479.0" visible="false">
+      <HBox fx:id="charactersBox" layoutX="40.0" layoutY="18.0" prefHeight="445.0" prefWidth="700.0" visible="false">
          <children>
-            <ImageView fitHeight="272.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character1" fitHeight="445.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
                <image>
-                  <Image url="@../images/ekko.png" />
+                  <Image url="@../images/character1.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="286.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character2" fitHeight="445.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
                <image>
-                  <Image url="@../images/jinx.png" />
+                  <Image url="@../images/character3.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="388.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="character3" fitHeight="445.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
                <image>
-                  <Image url="@../images/vi.png" />
+                  <Image url="@../images/character2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="character4" fitHeight="445.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+               <image>
+                  <Image url="@../images/character4.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="character5" fitHeight="445.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+               <image>
+                  <Image url="@../images/character5.jpg" />
                </image>
             </ImageView>
          </children>
