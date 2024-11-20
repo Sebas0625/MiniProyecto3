@@ -1,15 +1,18 @@
 .root {
-    -fx-background-image: url("../images/background-2.jpg") format("truetype");
+    -fx-background-image: url("../images/bg-4.png") format("truetype");
      -fx-background-size: cover;
      -fx-background-position: center;
 }
 
 .button{
-    -fx-background-color: transparent;
-    -fx-font-family: 'CustomFont';
-    -fx-font-weight: 100;
-    -fx-text-fill: rgba(226, 177, 92);
-    -fx-border-color: transparent;
+    -fx-font-size: 12px;
+    -fx-text-fill: black;
+    -fx-font-family: 'Orbitron', sans-serif;
+    -fx-background-image: url('../images/button-2.png'); /* Ruta de tu imagen */
+    -fx-background-size: 150,65;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 0;
 }
 
 .button:hover {
@@ -17,4 +20,8 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-effect: dropshadow(gaussian, rgba(255, 241, 216, 0.5), 15, 0.7, 0, 0);
+}
+
+.highlighted-cell {
+    -fx-background-color: rgba(0, 255, 0, 0.5);
 }

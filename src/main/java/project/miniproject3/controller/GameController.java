@@ -5,31 +5,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import project.miniproject3.model.Game;
+import project.miniproject3.model.SerializableFileHandler;
 import project.miniproject3.model.Ships;
 import project.miniproject3.view.GameStage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class GameController implements Initializable {
     Game game;
-
     Random rand;
-
     @FXML
     GridPane playerBoard;
-
-    @FXML
-    Label endLabel;
-
     @FXML
     GridPane machineBoard;
-
+    @FXML
+    Label endLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -41,7 +40,7 @@ public class GameController implements Initializable {
 
                 int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
                 int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
-                //Le pega
+
                 if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getMachineMatrix().getNumber(row, col) != 5 & game.getMachineMatrix().getNumber(row, col) != 6) {
                     game.getMachineMatrix().setNumber(row, col, 6);
                     game.setPlayerPoints(game.getPlayerPoints() + 1);
@@ -49,9 +48,6 @@ public class GameController implements Initializable {
                     if (isGameFinished()){
                         finishGame();
                     }
-                    machineTurn();
-
-                    //Falla
                 } else if (game.getMachineMatrix().getNumber(row, col) != 6) {
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
@@ -61,14 +57,14 @@ public class GameController implements Initializable {
                     machineTurn();
                 }
                 game.getMachineMatrix().printMatrix();
-
             }
-
         });
     }
 
     @FXML
     void handleExitButton(ActionEvent event) throws IOException {
+        SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
+        serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
         GameStage.deleteInstance();
     }
 
@@ -78,10 +74,9 @@ public class GameController implements Initializable {
     }
 
     public void machineTurn(){
-
+        machineBoard.setDisable(true);
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
-        // Acción a realizar después del retraso
         pause.setOnFinished(event -> {
             int rand1 = 0;
             int rand2 = 0;
@@ -106,13 +101,9 @@ public class GameController implements Initializable {
             if (isGameFinished()) {
                 finishGame();
             }
+            machineBoard.setDisable(false);
         });
-
-        // Iniciar el retraso
         pause.play();
-
-
-
     }
 
     public void showPlayerShips(){
@@ -137,13 +128,26 @@ public class GameController implements Initializable {
                 game.placeShip(row, col, rowSpan, colSpan, type);
             }
         }
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 10; j++){
+                if (game.getPlayerMatrix().getNumber(i, j) == 5){
+                    playerBoard.add(Ships.drawX(), j, i);
+                } else if (game.getPlayerMatrix().getNumber(i, j) == 6){
+                    playerBoard.add(Ships.createFire(), j, i);
+                }
+                if (game.getMachineMatrix().getNumber(i, j) == 5){
+                    machineBoard.add(Ships.drawX(), j, i);
+                } else if (game.getMachineMatrix().getNumber(i, j) == 6){
+                    machineBoard.add(Ships.createFire(), j, i);
+                }
+            }
+        }
         game.getPlayerMatrix().printMatrix();
     }
 
     public boolean isGameFinished(){
         if (game.getMachinePoints()==20){return true;}
-        else if(game.getPlayerPoints()==20){return true;}
-        return false;
+        else return game.getPlayerPoints() == 20;
 
     }
 
@@ -152,6 +156,17 @@ public class GameController implements Initializable {
             endLabel.setText("Ganaste, eres el arcano");
         }
         else if(game.getMachinePoints()==20){endLabel.setText("Perdiste, eres pobre");}
+        File file = new File("./src/main/resources/project/miniproject3/saves/game-data.ser");
+        if (file.exists()) {
+            boolean deleted = file.delete();
 
+            if (deleted) {
+                System.out.println("El archivo fue eliminado exitosamente.");
+            } else {
+                System.out.println("No se pudo eliminar el archivo.");
+            }
+        } else {
+            System.out.println("El archivo no existe.");
+        }
     }
 }
