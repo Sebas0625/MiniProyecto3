@@ -34,6 +34,7 @@ public class GameStage extends Stage {
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/game-view-style.css").toExternalForm());
         setScene(scene);
         setTitle("Battleship");
+        getIcons().add(new Image(getClass().getResourceAsStream("/project/miniproject3/images/icon.png")));
         setResizable(false);
         //getIcons().add(new Image(String.valueOf(getClass().getResource(""))));
 

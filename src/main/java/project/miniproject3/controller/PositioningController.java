@@ -15,7 +15,9 @@ import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -262,4 +264,31 @@ public class PositioningController {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void reproducirSonido(String nombreSonido, float volumen){
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
+            if (volume != null) {
+                volume.setValue(volumen);
+            }
+
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Error al reproducir el sonido.");
+        }
+    }
+
+    public void bSound(){
+        reproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
+    }
+    public void startSound(){
+        reproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
+
 }

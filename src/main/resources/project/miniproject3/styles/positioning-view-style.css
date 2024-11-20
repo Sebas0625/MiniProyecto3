@@ -1,16 +1,26 @@
+
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+.button{
+    -fx-background-color: transparent;
+    -fx-font-size: 12px;
+    -fx-text-fill: #000000;
+    -fx-font-family: 'Orbitron', sans-serif;
+    -fx-background-image: url('../images/button-3.png'); /* Ruta de tu imagen */
+    -fx-background-size: 150,65;
+    -fx-background-repeat: no-repeat; /* Evita que la imagen se repita */
+    -fx-background-position: center; /* Centra la imagen en el botón */
+    -fx-padding: 0;
+}
+
 .root {
     -fx-background-image: url("../images/bg-4.png") format("truetype");
      -fx-background-size: cover;
      -fx-background-position: center;
 }
 
-.button{
-    -fx-background-color: transparent;
-    -fx-font-family: 'CustomFont';
-    -fx-font-weight: 100;
-    -fx-text-fill: rgba(226, 177, 92);
-    -fx-border-color: transparent;
-}
 
 .button:hover {
     -fx-cursor: hand;
