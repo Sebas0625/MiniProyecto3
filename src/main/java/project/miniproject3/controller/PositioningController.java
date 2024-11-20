@@ -9,9 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import project.miniproject3.model.*;
+import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.model.ships.*;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
@@ -22,11 +22,11 @@ import java.util.ArrayList;
 
 public class PositioningController {
 
-    private final Game game = new Game();
     @FXML
     private GridPane boardGrid;
     @FXML
     private GridPane shipsGrid;
+    private final Game game = new Game();
     private final ArrayList<AShip> ships = new ArrayList<>();
     private SerializableFileHandler serializableFileHandler;
 
@@ -38,6 +38,7 @@ public class PositioningController {
             System.out.println(game.getPlayerPositions());
             System.out.println("Mostrando matriz de la máquina:");
             game.getMachineMatrix().printMatrix();
+
             serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
             WelcomeStage.closeInstance();
             GameStage.getInstance().getGameController().setGame(game);
@@ -90,24 +91,6 @@ public class PositioningController {
         if (event.getGestureSource() != boardGrid && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
-
-        // por terminar
-        /*
-        Group draggedShip = (Group) event.getGestureSource();
-        int col = (int) (event.getX() / (boardGrid.getWidth() / boardGrid.getColumnCount()));
-        int row = (int) (event.getY() / (boardGrid.getHeight() / boardGrid.getRowCount()));
-
-        int span = 0;
-        boolean horizontal = false;
-
-        for (AShip ship : ships) {
-            if (ship.getShape() == draggedShip) {
-                span = ship.getSpan();
-                horizontal = ship.isHorizontal();
-            }
-        }
-
-        //highlightCells(boardGrid, col, row, span, horizontal);*/
         event.consume();
     }
 
@@ -267,36 +250,5 @@ public class PositioningController {
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
-    }
-
-
-
-    private void highlightCells(GridPane grid, int startCol, int startRow, int span, boolean horizontal) {
-        clearHighlights(grid);
-
-        for (int i = 0; i < span; i++) {
-            int col = startCol + (horizontal ? i : 0);
-            int row = startRow + (horizontal ? 0 : i);
-
-            StackPane cell = getCell(grid, col, row);
-            if (cell != null) {
-                cell.getStyleClass().add("highlighted-cell");
-            }
-        }
-    }
-
-    private void clearHighlights(GridPane grid) {
-        for (Node node : grid.getChildren()) {
-            node.getStyleClass().remove("highlighted-cell");
-        }
-    }
-
-    private StackPane getCell(GridPane grid, int col, int row) {
-        for (Node node : grid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return (StackPane) node;
-            }
-        }
-        return null;
     }
 }

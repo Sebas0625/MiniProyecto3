@@ -1,4 +1,4 @@
-package project.miniproject3.model;
+package project.miniproject3.model.ships;
 
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;

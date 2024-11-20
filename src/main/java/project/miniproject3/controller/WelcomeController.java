@@ -5,14 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
-import project.miniproject3.model.SerializableFileHandler;
+import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
 
 import java.io.File;
@@ -20,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.animation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.sound.sampled.*;
 
 public class WelcomeController {
@@ -38,24 +39,33 @@ public class WelcomeController {
     private ImageView character4;
     @FXML
     private ImageView character5;
+    @FXML
+    private TextField nickNameField;
+    private final PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
+    private String character;
 
     @FXML
     public void initialize(){
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character1";});
         character2.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection4.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character2";});
         character3.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection2.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character3";});
         character4.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection3.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character4";});
         character5.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection5.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character5";});
     }
 
     private void setTransition(){
@@ -74,8 +84,12 @@ public class WelcomeController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/positioning-view-style.css").toExternalForm());
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), scene.getRoot());
-        fadeTransition.setFromValue(0);  // Comienza totalmente transparente
+        fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
+
+        String nickname = nickNameField.getText() == "" ? "Anónimo" : nickNameField.getText();
+        plainTextFileHandler.writeToFile("./src/main/resources/project/miniproject3/saves/player-data.csv",
+                nickname + "," + character);
 
         stage.setScene(scene);
         stage.show();
@@ -85,8 +99,14 @@ public class WelcomeController {
     public void handleContinue(ActionEvent event) throws IOException{
         startSound();
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
+        PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
         try {
+            String[] data = plainTextFileHandler.readFromFile("./src/main/resources/project/miniproject3/saves/player-data.csv");
+            String nickname = data[0];
+            String character = data[1];
+
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
+
             GameStage.getInstance().getGameController().setGame(game);
             if (game.getMachineMatrix() == null){
                 System.out.println("Usted no tiene partidas guardadas");
@@ -125,8 +145,6 @@ public class WelcomeController {
         }
     }
 
-
-
     public void ReproducirSonido(String nombreSonido){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
@@ -144,5 +162,4 @@ public class WelcomeController {
     public void startSound(){
         ReproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav");
     }
-
 }

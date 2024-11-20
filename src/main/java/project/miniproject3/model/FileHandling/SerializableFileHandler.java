@@ -1,8 +1,8 @@
-package project.miniproject3.model;
+package project.miniproject3.model.FileHandling;
 
 import java.io.*;
 
-public class SerializableFileHandler implements ISerializableFileHandler{
+public class SerializableFileHandler implements ISerializableFileHandler {
     @Override
     public void serialize(String fileName, Object element) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))){

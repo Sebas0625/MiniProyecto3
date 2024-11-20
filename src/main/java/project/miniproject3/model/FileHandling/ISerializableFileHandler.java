@@ -1,4 +1,4 @@
-package project.miniproject3.model;
+package project.miniproject3.model.FileHandling;
 
 public interface ISerializableFileHandler {
     void serialize(String fileName, Object element);

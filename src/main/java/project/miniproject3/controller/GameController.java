@@ -5,14 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
-import project.miniproject3.model.SerializableFileHandler;
-import project.miniproject3.model.Ships;
+import project.miniproject3.model.FileHandling.SerializableFileHandler;
+import project.miniproject3.model.ships.Ships;
 import project.miniproject3.view.GameStage;
 
 import java.io.File;
@@ -21,17 +20,27 @@ import java.net.URL;
 import java.util.*;
 
 public class GameController implements Initializable {
-    Game game;
-    Random rand;
+    private Game game;
+    private Random rand;
+    private String nickname;
+    private String character;
     @FXML
-    GridPane playerBoard;
+    private GridPane playerBoard;
     @FXML
-    GridPane machineBoard;
+    private GridPane machineBoard;
     @FXML
-    Label endLabel;
+    private Label endLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
+        String[] data = plainTextFileHandler.readFromFile("./src/main/resources/project/miniproject3/saves/player-data.csv");
+        this.nickname = data[0];
+        this.character = data[1];
+        // HACER ALGO CON LA SERIALIZACIÓN
+        System.out.println(nickname);
+        System.out.println(character);
+
         machineBoard.setOnMouseClicked(event -> {
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
                 double x = event.getX();
@@ -153,13 +162,12 @@ public class GameController implements Initializable {
 
     public void finishGame(){
         if(game.getPlayerPoints()==20){
-            endLabel.setText("Ganaste, eres el arcano");
+            endLabel.setText("Ganaste, eres el arcano " + nickname);
         }
         else if(game.getMachinePoints()==20){endLabel.setText("Perdiste, eres pobre");}
         File file = new File("./src/main/resources/project/miniproject3/saves/game-data.ser");
         if (file.exists()) {
             boolean deleted = file.delete();
-
             if (deleted) {
                 System.out.println("El archivo fue eliminado exitosamente.");
             } else {
