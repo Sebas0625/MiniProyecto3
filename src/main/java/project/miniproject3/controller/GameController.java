@@ -17,36 +17,46 @@ public class GameController implements Initializable {
     Game game;
 
     Random rand;
+
     @FXML
     GridPane playerBoard;
     @FXML
     GridPane machineBoard;
-    private int impactsCounter = 0;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         machineBoard.setOnMouseClicked(event -> {
-            double x = event.getX();
-            double y = event.getY();
-            rand= new Random();
+            if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
 
-            int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
-            int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
-            //Le pega
-            if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5 & game.getPlayerMatrix().getNumber(row, col) != 6) {
-                game.getMachineMatrix().setNumber(row, col, 6);
-                impactsCounter++;
-                machineBoard.add(Ships.createFire(), col, row);
 
-                if (isGameFinished()){
-                    finishGame();
+                double x = event.getX();
+                double y = event.getY();
+                rand= new Random();
+
+                int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
+                int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
+                //Le pega
+                if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5 & game.getPlayerMatrix().getNumber(row, col) != 6) {
+                    game.getMachineMatrix().setNumber(row, col, 6);
+                    game.setPlayerPoints(game.getPlayerPoints() + 1);
+                    machineBoard.add(Ships.createFire(), col, row);
+                    if (isGameFinished()){
+                        finishGame();
+                    }
+                    machineTurn();
+
+                    //Falla
+                } else{
+                    game.getMachineMatrix().setNumber(row, col, 5);
+                    machineBoard.add(Ships.drawX(), col, row);
+                    if (isGameFinished()){
+                        finishGame();
+                    }
+                    machineTurn();
                 }
-                //Falla
-            } else{
-                game.getMachineMatrix().setNumber(row, col, 5);
-                machineBoard.add(Ships.drawX(), col, row);
-                machineTurn();
             }
+
         });
     }
 
@@ -76,6 +86,9 @@ public class GameController implements Initializable {
             game.getPlayerMatrix().setNumber(rand1,rand2,5);
         }
         else {game.getPlayerMatrix().setNumber(rand1,rand2,6);}
+
+
+        if (isGameFinished()){finishGame();}
         game.getPlayerMatrix().printMatrix();
 
 
@@ -104,7 +117,10 @@ public class GameController implements Initializable {
     }
 
     public boolean isGameFinished(){
-        return impactsCounter == 20;
+        if (game.getMachinePoints()==20){return true;}
+        else if(game.getPlayerPoints()==20){return true;}
+        return false;
+
     }
 
     public void finishGame(){
