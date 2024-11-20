@@ -29,7 +29,6 @@ public class GameController implements Initializable {
         machineBoard.setOnMouseClicked(event -> {
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
 
-
                 double x = event.getX();
                 double y = event.getY();
                 rand= new Random();
@@ -37,7 +36,7 @@ public class GameController implements Initializable {
                 int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
                 int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
                 //Le pega
-                if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getPlayerMatrix().getNumber(row, col) != 5 & game.getPlayerMatrix().getNumber(row, col) != 6) {
+                if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getMachineMatrix().getNumber(row, col) != 5 & game.getMachineMatrix().getNumber(row, col) != 6) {
                     game.getMachineMatrix().setNumber(row, col, 6);
                     game.setPlayerPoints(game.getPlayerPoints() + 1);
                     machineBoard.add(Ships.createFire(), col, row);
@@ -47,7 +46,7 @@ public class GameController implements Initializable {
                     machineTurn();
 
                     //Falla
-                } else{
+                } else if (game.getMachineMatrix().getNumber(row, col) != 6) {
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
                     if (isGameFinished()){
@@ -55,6 +54,8 @@ public class GameController implements Initializable {
                     }
                     machineTurn();
                 }
+                game.getMachineMatrix().printMatrix();
+
             }
 
         });
@@ -85,11 +86,14 @@ public class GameController implements Initializable {
         if(game.getPlayerMatrix().getNumber(rand1, rand2) ==0){
             game.getPlayerMatrix().setNumber(rand1,rand2,5);
         }
-        else {game.getPlayerMatrix().setNumber(rand1,rand2,6);}
+        else {game.getPlayerMatrix().setNumber(rand1,rand2,6);
+            game.setPlayerPoints(game.getPlayerPoints() + 1);
+        }
+        game.getPlayerMatrix().printMatrix();
 
 
         if (isGameFinished()){finishGame();}
-        game.getPlayerMatrix().printMatrix();
+
 
 
     }
