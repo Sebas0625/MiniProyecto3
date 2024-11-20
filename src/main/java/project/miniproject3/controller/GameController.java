@@ -1,10 +1,13 @@
 package project.miniproject3.controller;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.Ships;
 import project.miniproject3.view.GameStage;
@@ -20,6 +23,10 @@ public class GameController implements Initializable {
 
     @FXML
     GridPane playerBoard;
+
+    @FXML
+    Label endLabel;
+
     @FXML
     GridPane machineBoard;
 
@@ -28,7 +35,6 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         machineBoard.setOnMouseClicked(event -> {
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
-
                 double x = event.getX();
                 double y = event.getY();
                 rand= new Random();
@@ -73,26 +79,37 @@ public class GameController implements Initializable {
 
     public void machineTurn(){
 
-        int rand1=0;
-        int rand2=0;
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
-        do{
-            rand1=rand.nextInt(10);
-            rand2=rand.nextInt(10);
-            System.out.println(rand1);
-            System.out.println(rand2);
-        }while (game.getPlayerMatrix().getNumber(rand1, rand2) ==5 || game.getPlayerMatrix().getNumber(rand1, rand2) ==6);
+        // Acción a realizar después del retraso
+        pause.setOnFinished(event -> {
+            int rand1 = 0;
+            int rand2 = 0;
 
-        if(game.getPlayerMatrix().getNumber(rand1, rand2) ==0){
-            game.getPlayerMatrix().setNumber(rand1,rand2,5);
-        }
-        else {game.getPlayerMatrix().setNumber(rand1,rand2,6);
-            game.setPlayerPoints(game.getPlayerPoints() + 1);
-        }
-        game.getPlayerMatrix().printMatrix();
+            do {
+                rand1 = rand.nextInt(10);
+                rand2 = rand.nextInt(10);
+                System.out.println(rand1);
+                System.out.println(rand2);
+            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
 
+            if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
+                game.getPlayerMatrix().setNumber(rand1, rand2, 5);
+                playerBoard.add(Ships.drawX(), rand2, rand1);
+            } else {
+                game.getPlayerMatrix().setNumber(rand1, rand2, 6);
+                game.setMachinePoints(game.getMachinePoints() + 1);
+                playerBoard.add(Ships.createFire(), rand2, rand1);
+            }
+            game.getPlayerMatrix().printMatrix();
 
-        if (isGameFinished()){finishGame();}
+            if (isGameFinished()) {
+                finishGame();
+            }
+        });
+
+        // Iniciar el retraso
+        pause.play();
 
 
 
@@ -131,6 +148,10 @@ public class GameController implements Initializable {
     }
 
     public void finishGame(){
+        if(game.getPlayerPoints()==20){
+            endLabel.setText("Ganaste, eres el arcano");
+        }
+        else if(game.getMachinePoints()==20){endLabel.setText("Perdiste, eres pobre");}
 
     }
 }

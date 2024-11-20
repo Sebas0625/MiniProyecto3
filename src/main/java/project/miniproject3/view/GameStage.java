@@ -72,7 +72,6 @@ public class GameStage extends Stage {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(null);
         alert.setHeaderText("¿Seguro que desea cerrar la ventana?");
-        alert.setContentText("Perderá el progreso actual.");
         if (alert.showAndWait().get() == ButtonType.OK) {
             GameStageHolder.INSTANCE.close();
             GameStageHolder.INSTANCE = null;
