@@ -4,7 +4,7 @@
 }
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
 
 .root {
@@ -29,7 +29,6 @@
 
 .button1{
     -fx-font-size: 18px;
-    -fx-font-weight: 1000;
     -fx-text-fill: black;
     -fx-font-family: 'Orbitron', sans-serif;
     -fx-background-image: url('../images/button-1.png'); /* Ruta de tu imagen */
@@ -41,7 +40,6 @@
 
 .button2{
     -fx-font-size: 12px;
-    -fx-font-weight: 1000;
     -fx-text-fill: black;
     -fx-font-family: 'Orbitron', sans-serif;
     -fx-background-image: url('../images/button-2.png'); /* Ruta de tu imagen */
