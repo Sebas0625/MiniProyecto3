@@ -5,22 +5,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javafx.animation.TranslateTransition;
 
 public class WelcomeController {
+    @FXML
+    private HBox charactersBox;
 
     @FXML
     public void handlePlay(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/positioning-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/positioning-view-style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -53,6 +59,14 @@ public class WelcomeController {
 
     @FXML
     public void handleCharacter(){
-
+        TranslateTransition transition = new TranslateTransition(Duration.millis(300), charactersBox);
+        if (charactersBox.isVisible()) {
+            transition.setToX(-charactersBox.getWidth());
+            charactersBox.setVisible(false);
+        } else {
+            charactersBox.setVisible(true);
+            transition.setToX(0);
+        }
+        transition.play();
     }
 }

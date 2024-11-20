@@ -6,12 +6,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="480.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.WelcomeController">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="21.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true" />
       <Label id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="169.0" layoutY="50.0" prefHeight="168.0" prefWidth="442.0" text="BattleShip">
          <font>
             <Font size="89.0" />
@@ -60,5 +60,24 @@
             <Image url="@../images/circle.png" />
          </image>
       </ImageView>
+      <HBox fx:id="charactersBox" layoutX="90.0" layoutY="25.0" prefHeight="271.0" prefWidth="479.0" visible="false">
+         <children>
+            <ImageView fitHeight="272.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/ekko.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="286.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/jinx.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="388.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/vi.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -1,15 +1,21 @@
 package project.miniproject3.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import project.miniproject3.model.*;
 import project.miniproject3.model.ships.*;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -246,5 +252,14 @@ public class PositioningController {
         shipsGrid.add(frigate2.getShape(), 2, 3);
         shipsGrid.add(frigate3.getShape(), 3, 3);
         shipsGrid.add(frigate4.getShape(), 4, 3);
+    }
+
+    public void handleBackToMenu(ActionEvent event) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/welcome-view.fxml"));
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
     }
 }
