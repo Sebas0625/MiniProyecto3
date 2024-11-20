@@ -1,3 +1,20 @@
 .root {
+    -fx-background-image: url("../images/background-2.jpg") format("truetype");
+     -fx-background-size: cover;
+     -fx-background-position: center;
+}
 
+.button{
+    -fx-background-color: transparent;
+    -fx-font-family: 'CustomFont';
+    -fx-font-weight: 100;
+    -fx-text-fill: rgba(226, 177, 92);
+    -fx-border-color: transparent;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(255, 241, 216, 0.5), 15, 0.7, 0, 0);
 }
