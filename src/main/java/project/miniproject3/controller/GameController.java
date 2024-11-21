@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -30,11 +32,14 @@ public class GameController implements Initializable {
     GridPane machineBoard;
     @FXML
     Label endLabel;
+    @FXML
+    ImageView endGameImage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         machineBoard.setOnMouseClicked(event -> {
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
+
                 double x = event.getX();
                 double y = event.getY();
                 rand= new Random();
@@ -96,12 +101,11 @@ public class GameController implements Initializable {
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
         pause.setOnFinished(event -> {
+            game.setMachinePoints(19);
             int rand1 = 0;
             int rand2 = 0;
             try{
             do {
-
-
 
                 rand1 = rand.nextInt(10);
                 rand2 = rand.nextInt(10);
@@ -178,8 +182,10 @@ public class GameController implements Initializable {
     public void finishGame(){
         if(game.getPlayerPoints()==20){
             endLabel.setText("Ganaste, eres el arcano");
+            setEndGameImage();
         }
         else if(game.getMachinePoints()==20){endLabel.setText("Perdiste, eres pobre");}
+        setEndGameImage();
         File file = new File("./src/main/resources/project/miniproject3/saves/game-data.ser");
         if (file.exists()) {
             boolean deleted = file.delete();
@@ -191,6 +197,16 @@ public class GameController implements Initializable {
             }
         } else {
             System.out.println("El archivo no existe.");
+        }
+    }
+    public void setEndGameImage(){
+        if(game.getMachinePoints()==20){
+            endGameImage.setVisible(true);
+            endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/loseImage.png").toExternalForm()));
+        }
+        else if(game.getPlayerPoints()==20){
+            endGameImage.setVisible(true);
+            endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
         }
     }
 }
