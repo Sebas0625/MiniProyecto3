@@ -18,7 +18,6 @@ import project.miniproject3.view.WelcomeStage;
 import javafx.event.*;
 
 import javax.sound.sampled.*;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class PositioningController {
     private GridPane shipsGrid;
     private final Game game = new Game();
     private final ArrayList<AShip> ships = new ArrayList<>();
-    private SerializableFileHandler serializableFileHandler;
+    private final SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
 
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
@@ -44,7 +43,7 @@ public class PositioningController {
 
             serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
             WelcomeStage.closeInstance();
-            GameStage.getInstance().getGameController().setGame(game);
+            GameStage.getInstance().getGameController().setGame(game, true);
         }else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Debe colocar todos los barcos en alguna posición :)");
@@ -54,8 +53,6 @@ public class PositioningController {
 
     @FXML
     public void initialize() {
-        serializableFileHandler = new SerializableFileHandler();
-
         initializeShipsGrid();
 
         for (int i = 0; i < 10; i++) {
@@ -255,18 +252,17 @@ public class PositioningController {
         stage.show();
     }
 
-    public void reproducirSonido(String nombreSonido, float volumen){
+    public void playSound(String soundName, float volumeValue){
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
             if (volume != null) {
-                volume.setValue(volumen);
+                volume.setValue(volumeValue);
             }
 
         } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
@@ -275,10 +271,10 @@ public class PositioningController {
     }
 
     public void bSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
-    }
-    public void startSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
     }
 
+    public void startSound(){
+        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
 }

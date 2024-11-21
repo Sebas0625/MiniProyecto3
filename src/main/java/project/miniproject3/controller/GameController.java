@@ -5,22 +5,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ImageInput;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import project.miniproject3.model.FileHandling.PlainTextFileHandler;
-import javafx.scene.shape.Rectangle;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
+import project.miniproject3.model.GameMatrix;
 import project.miniproject3.model.ships.Ships;
 import project.miniproject3.view.GameStage;
 
 import java.io.File;
 import javax.sound.sampled.*;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -53,17 +50,20 @@ public class GameController implements Initializable {
                 double y = event.getY();
                 rand= new Random();
 
-            int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
-            int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
+                int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
+                int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
 
-                if (game.getMachineMatrix().getNumber(row, col) != 0 & game.getMachineMatrix().getNumber(row, col) != 5 & game.getMachineMatrix().getNumber(row, col) != 6) {
+                int num = game.getMachineMatrix().getNumber(row, col);
+
+                if (num != 0 & num != 5 & num != 6 & num != 7) {
                     game.getMachineMatrix().setNumber(row, col, 6);
                     game.setPlayerPoints(game.getPlayerPoints() + 1);
-                    machineBoard.add(Ships.createFire(), col, row);
+                    machineBoard.add(Ships.createBomb(), col, row);
+                    verifySunkenShips(game.getPlayerPositions(), playerBoard, game.getPlayerMatrix());
                     if (isGameFinished()){
                         finishGame();
                     }
-                } else if (game.getMachineMatrix().getNumber(row, col) != 6) {
+                } else if (num == 0){
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
                     if (isGameFinished()){
@@ -83,9 +83,9 @@ public class GameController implements Initializable {
         GameStage.deleteInstance();
     }
 
-    public void setGame(Game game){
+    public void setGame(Game game, boolean isNewGame){
         this.game = game;
-        showPlayerShips();
+        showPlayerShips(isNewGame);
     }
 
     public void machineTurn(){
@@ -101,15 +101,18 @@ public class GameController implements Initializable {
                 rand2 = rand.nextInt(10);
                 System.out.println(rand1);
                 System.out.println(rand2);
-            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
+            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
 
-            if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
+            int num = game.getPlayerMatrix().getNumber(rand1, rand2);
+
+            if (num == 0) {
                 game.getPlayerMatrix().setNumber(rand1, rand2, 5);
                 playerBoard.add(Ships.drawX(), rand2, rand1);
             } else {
                 game.getPlayerMatrix().setNumber(rand1, rand2, 6);
                 game.setMachinePoints(game.getMachinePoints() + 1);
-                playerBoard.add(Ships.createFire(), rand2, rand1);
+                playerBoard.add(Ships.createBomb(), rand2, rand1);
+                verifySunkenShips(game.getMachinePositions(), machineBoard, game.getMachineMatrix());
             }
             game.getPlayerMatrix().printMatrix();
 
@@ -118,10 +121,11 @@ public class GameController implements Initializable {
             }
             machineBoard.setDisable(false);
         });
+
         pause.play();
     }
 
-    public void showPlayerShips(){
+    public void showPlayerShips(boolean isNewGame){
         int row, col, rowSpan, colSpan, type;
         Group shape = new Group();
         for (ArrayList<Integer> shipData : game.getPlayerPositions()){
@@ -140,7 +144,7 @@ public class GameController implements Initializable {
             if (colSpan != 1) shape.setRotate(90);
             if (!(row == -1 || col == -1 || rowSpan == -1 || colSpan == -1)){
                 playerBoard.add(shape, col, row, colSpan, rowSpan);
-                game.placeShip(row, col, rowSpan, colSpan, type);
+                if (isNewGame) game.placeShip(row, col, rowSpan, colSpan, type);
             }
         }
         for (int i = 0; i < 10; i++){
@@ -148,11 +152,15 @@ public class GameController implements Initializable {
                 if (game.getPlayerMatrix().getNumber(i, j) == 5){
                     playerBoard.add(Ships.drawX(), j, i);
                 } else if (game.getPlayerMatrix().getNumber(i, j) == 6){
+                    playerBoard.add(Ships.createBomb(), j, i);
+                } else if (game.getPlayerMatrix().getNumber(i, j) == 7){
                     playerBoard.add(Ships.createFire(), j, i);
                 }
                 if (game.getMachineMatrix().getNumber(i, j) == 5){
                     machineBoard.add(Ships.drawX(), j, i);
                 } else if (game.getMachineMatrix().getNumber(i, j) == 6){
+                    machineBoard.add(Ships.createBomb(), j, i);
+                } else if (game.getPlayerMatrix().getNumber(i, j) == 7){
                     machineBoard.add(Ships.createFire(), j, i);
                 }
             }
@@ -163,7 +171,6 @@ public class GameController implements Initializable {
     public boolean isGameFinished(){
         if (game.getMachinePoints()==20){return true;}
         else return game.getPlayerPoints() == 20;
-
     }
 
     public void finishGame(){
@@ -184,18 +191,17 @@ public class GameController implements Initializable {
         }
     }
 
-    public void reproducirSonido(String nombreSonido, float volumen){
+    public void playSound(String soundName, float volumeValue){
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
             if (volume != null) {
-                volume.setValue(volumen);
+                volume.setValue(volumeValue);
             }
 
         } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
@@ -203,11 +209,55 @@ public class GameController implements Initializable {
         }
     }
 
-    public void bSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
-    }
-    public void startSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    public void verifySunkenShips(ArrayList<ArrayList<Integer>> shipData, GridPane pane, GameMatrix matrix){
+        int row, col, rowSpan, colSpan;
+        boolean flag = true;
+        for(ArrayList<Integer> data : shipData){
+            row = data.get(0);
+            col = data.get(1);
+            rowSpan = data.get(2);
+            colSpan = data.get(3);
+            for (int i = row; i < rowSpan; i++){
+                for (int j = col; j < colSpan; j++){
+                    if (game.getPlayerMatrix().getNumber(i, j) != 6){
+                        flag = false;
+                    }
+                }
+            }
+            if (flag){
+                for (int i = row; i < rowSpan; i++){
+                    for (int j = col; j < colSpan; j++){
+                        matrix.setNumber(i, j, 7);
+                        removeNodeFromGridPane(pane, j, i);
+                        pane.add(Ships.createFire(), j, i);
+                    }
+                }
+            }
+        }
     }
 
+    public void removeNodeFromGridPane(GridPane gridPane, int column, int row) {
+        Node nodeToRemove = null;
+        for (Node node : gridPane.getChildren()) {
+            Integer nodeColumn = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+
+            if (nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row) {
+                nodeToRemove = node;
+                break;
+            }
+        }
+
+        if (nodeToRemove != null) {
+            gridPane.getChildren().remove(nodeToRemove);
+        }
+    }
+
+    public void bSound(){
+        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
+    }
+
+    public void startSound(){
+        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
 }
