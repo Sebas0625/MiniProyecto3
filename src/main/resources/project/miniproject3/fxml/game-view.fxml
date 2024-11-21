@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.ImageInput?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Label?>
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.GameController">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.GameController">
    <children>
       <Rectangle fx:id="gridPane1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="400.0" layoutX="33.0" layoutY="66.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="400.0">
          <effect>
@@ -76,5 +76,6 @@
             <Font name="Bell MT Bold" size="24.0" />
          </font>
       </Label>
+      <Button layoutX="33.0" layoutY="32.0" mnemonicParsing="false" onAction="#showMachineMatrix" prefHeight="25.0" prefWidth="145.0" text="Mostrar" />
    </children>
 </AnchorPane>

@@ -85,3 +85,7 @@
 .text-field:pressed {
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 20, 0.7, 0, 0);
 }
+
+.button:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 20, 0.7, 0, 0);
+}

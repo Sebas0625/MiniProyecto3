@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import project.miniproject3.model.FileHandling.PlainTextFileHandler;
@@ -18,6 +19,7 @@ import project.miniproject3.view.GameStage;
 
 import java.io.File;
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -26,6 +28,7 @@ public class GameController implements Initializable {
     private Game game;
     private Random rand;
     private String nickname;
+    private boolean isMachineVisible = false;
     private String character;
     @FXML
     private GridPane playerBoard;
@@ -43,6 +46,26 @@ public class GameController implements Initializable {
         // HACER ALGO CON LA SERIALIZACIÓN
         System.out.println(nickname);
         System.out.println(character);
+
+        Group tempImage = Ships.createCrosshair();
+        tempImage.setVisible(false);
+        machineBoard.getChildren().add(tempImage);
+        machineBoard.setOnMouseMoved(event ->{
+            double mouseX = event.getX();
+            double mouseY = event.getY();
+
+            int col = (int) (mouseX / 40);
+            int row = (int) (mouseY / 40);
+
+            GridPane.setColumnIndex(tempImage, col);
+            GridPane.setRowIndex(tempImage, row);
+
+            tempImage.setVisible(true);
+        });
+        machineBoard.setOnMouseExited(event -> {
+            tempImage.setVisible(false);
+        });
+
 
         machineBoard.setOnMouseClicked(event -> {
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
@@ -160,7 +183,7 @@ public class GameController implements Initializable {
                     machineBoard.add(Ships.drawX(), j, i);
                 } else if (game.getMachineMatrix().getNumber(i, j) == 6){
                     machineBoard.add(Ships.createBomb(), j, i);
-                } else if (game.getPlayerMatrix().getNumber(i, j) == 7){
+                } else if (game.getMachineMatrix().getNumber(i, j) == 7){
                     machineBoard.add(Ships.createFire(), j, i);
                 }
             }
@@ -221,7 +244,6 @@ public class GameController implements Initializable {
 
             for (int i = row; i < row + rowSpan; i++) {
                 for (int j = col; j < col + colSpan; j++) {
-                    System.out.println(matrix.getNumber(i, j));
                     if (matrix.getNumber(i, j) != 6) {
                         flag = false;
                         break;
@@ -229,7 +251,6 @@ public class GameController implements Initializable {
                 }
                 if (!flag) break;
             }
-
             if (flag) {
                 for (int i = row; i < row + rowSpan; i++) {
                     for (int j = col; j < col + colSpan; j++) {
@@ -247,16 +268,55 @@ public class GameController implements Initializable {
         for (Node node : gridPane.getChildren()) {
             Integer nodeColumn = GridPane.getColumnIndex(node);
             Integer nodeRow = GridPane.getRowIndex(node);
-
             if (nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row) {
                 nodeToRemove = node;
                 break;
             }
         }
-
         if (nodeToRemove != null) {
             gridPane.getChildren().remove(nodeToRemove);
         }
+    }
+
+    public void showMachineMatrix(ActionEvent event){
+        if (isMachineVisible){
+            machineBoard.getChildren().clear();
+            machineBoard.setGridLinesVisible(false);
+            machineBoard.setGridLinesVisible(true);
+            for (int i = 0; i < 10; i++){
+                for (int j = 0; j < 10; j++){
+                    if (game.getMachineMatrix().getNumber(i, j) == 5){
+                        machineBoard.add(Ships.drawX(), j, i);
+                    } else if (game.getMachineMatrix().getNumber(i, j) == 6){
+                        machineBoard.add(Ships.createBomb(), j, i);
+                    } else if (game.getMachineMatrix().getNumber(i, j) == 7){
+                        machineBoard.add(Ships.createFire(), j, i);
+                    }
+                }
+            }
+        }else {
+            int row, col, rowSpan, colSpan, type;
+            Group shape = new Group();
+            for (ArrayList<Integer> shipData : game.getMachinePositions()){
+                row = shipData.get(0);
+                col = shipData.get(1);
+                rowSpan = shipData.get(2);
+                colSpan = shipData.get(3);
+                type = shipData.get(4);
+                shape = switch (type) {
+                    case 4 -> Ships.carrier();
+                    case 3 -> Ships.submarine();
+                    case 2 -> Ships.destroyer();
+                    case 1 -> Ships.frigate();
+                    default -> shape;
+                };
+                if (colSpan != 1) shape.setRotate(90);
+                if (!(row == -1 || col == -1 || rowSpan == -1 || colSpan == -1)){
+                    machineBoard.add(shape, col, row, colSpan, rowSpan);
+                }
+            }
+        }
+        this.isMachineVisible = !isMachineVisible;
     }
 
     public void bSound(){
