@@ -105,6 +105,7 @@ public class GameController implements Initializable {
                         }
                     } catch (GameException e) {
                         endLabel.setText(e.getMessage());
+                        endLabel.setStyle("-fx-text-fill: Black;");
                         PauseTransition pause = new PauseTransition(Duration.seconds(2));
                         pause.setOnFinished(event1 -> {
                             endLabel.setText("");
