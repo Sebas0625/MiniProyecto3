@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -16,6 +17,9 @@ import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,12 +45,15 @@ public class WelcomeController {
     @FXML
     private ImageView character5;
     @FXML
+    private ImageView tutorialImageView;
+    @FXML
     private TextField nickNameField;
     private final PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
     private String character;
 
     @FXML
     public void initialize(){
+
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
             setTransition();
@@ -114,12 +121,104 @@ public class WelcomeController {
         }
     }
 
-    @FXML
-    public void handleTutorial(){
-        startSound();
-        variableControl = 1;
 
+
+    @FXML
+    public void handleTutorial() {
+        Image tutorial = new Image(getClass().getResource("/project/miniproject3/images/tutorial.png").toExternalForm());
+        startSound();
+
+        tutorialImageView.setImage(tutorial);
+        tutorialImageView.setFitWidth(tutorialImageView.getFitWidth());  // Ajusta el ancho de la imagen al ancho del ImageView
+        tutorialImageView.setFitHeight(tutorialImageView.getFitHeight());  // Ajusta la altura de la imagen al alto del ImageView
+        tutorialImageView.setPreserveRatio(true);
+
+        // Animación para que la imagen se vuelva visible con un desvanecimiento y escalado
+        if (!tutorialImageView.isVisible()) {
+            // Establecer el tamaño inicial pequeño y completamente transparente
+            tutorialImageView.setOpacity(0);
+            tutorialImageView.setScaleX(0.5);
+            tutorialImageView.setScaleY(0.5);
+
+            // Hacer que el ImageView sea visible pero no interactuable inicialmente
+            tutorialImageView.setVisible(true);
+            tutorialImageView.setMouseTransparent(true);
+
+            // Animación de FadeIn (desvanecimiento) y ScaleUp (escalado)
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            // Ejecutar animaciones en paralelo
+            fadeIn.play();
+            scaleIn.play();
+
+            // Cuando la animación termine, hacer que el tutorial sea interactuable
+            scaleIn.setOnFinished(e -> {
+                tutorialImageView.setMouseTransparent(false);
+            });
+
+        } else {
+            // Si ya es visible, entonces aplicar animación para hacerla invisible con desvanecimiento y reducción de tamaño
+
+            // Animación de FadeOut (desvanecimiento) y ScaleDown (reducción)
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            // Ejecutar animaciones en paralelo
+            fadeOut.play();
+            scaleOut.play();
+
+            // Cuando la animación termine, hacer que la imagen no sea visible y no interactuable
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
+
+        System.out.println("siuuuuuu");
     }
+
+    public void setTransparent() {
+        // Este método se encargará de ocultar la imagen con animación de FadeOut y ScaleDown
+        if (tutorialImageView.isVisible()) {
+            // Animación de FadeOut y ScaleDown para desaparecer la imagen
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            // Ejecutar animaciones en paralelo
+            fadeOut.play();
+            scaleOut.play();
+
+            // Cuando la animación termine, hacer que la imagen no sea visible y no interactuable
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
+        System.out.println("xdddddddddddddddddd");
+    }
+
 
     @FXML
     public void handleCredits(){

@@ -266,4 +266,6 @@ public class GameController implements Initializable {
     public void startSound(){
         playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
     }
+
+    public void shootSound(){playSound("src/main/resources/project/miniproject3/sounds/cannon.wav",-15);}
 }
