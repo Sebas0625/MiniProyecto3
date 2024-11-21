@@ -36,7 +36,6 @@ public class GameStage extends Stage {
         setTitle("Battleship");
         getIcons().add(new Image(getClass().getResourceAsStream("/project/miniproject3/images/icon.png")));
         setResizable(false);
-        //getIcons().add(new Image(String.valueOf(getClass().getResource(""))));
 
         setOnCloseRequest(windowEvent -> {
             windowEvent.consume();

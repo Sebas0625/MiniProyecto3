@@ -595,26 +595,22 @@ public class Ships {
         bombMaterial.setDiffuseColor(Color.BLACK);
         bombMaterial.setSpecularColor(Color.DARKGRAY);
 
-        // Cuerpo de la bomba
         Sphere bombBody = new Sphere(bombRadius);
         bombBody.setMaterial(bombMaterial);
-        bombBody.setTranslateX(20); // Centrado en X (mitad de 40)
-        bombBody.setTranslateY(24); // Alineado hacia abajo para dejar espacio al cable y chispa
+        bombBody.setTranslateX(20);
+        bombBody.setTranslateY(24);
         bombBody.setTranslateZ(0);
 
-        // Base del cable
         Sphere fuseBase = new Sphere(fuseBaseRadius);
         PhongMaterial fuseMaterial = new PhongMaterial(Color.LIGHTGRAY);
         fuseBase.setMaterial(fuseMaterial);
         fuseBase.setTranslateX(20);
-        fuseBase.setTranslateY(8); // Justo encima del cuerpo de la bomba
+        fuseBase.setTranslateY(8);
 
-        // cable
         Line fuse = new Line(20, 8, 28, 2); // Línea diagonal desde la base al espacio superior
         fuse.setStroke(Color.SADDLEBROWN);
         fuse.setStrokeWidth(2);
 
-        // Chispa de
         Polygon spark = new Polygon();
         spark.getPoints().addAll(
                 28.0, 2.0,  // Centro de la chispa
@@ -630,16 +626,13 @@ public class Ships {
         spark.setStroke(Color.RED);
         spark.setStrokeWidth(0.8);
 
-//        luz apuntando a la esfera
         PointLight light = new PointLight(Color.WHITE);
         light.setTranslateX(10.0);
         light.setTranslateY(0.0);
         light.setTranslateZ(0.0);
 
-//        luz de ambiente que ilumina a la esfera y la base del cable de la bomba
         AmbientLight ambientLight = new AmbientLight(Color.LIGHTGRAY);
 
-        // Agregar las partes al grupo
         bombGroup.getChildren().addAll(bombBody, fuseBase, fuse, spark,light, ambientLight);
 
         bombGroup.setLayoutX(100.0);
@@ -650,21 +643,19 @@ public class Ships {
 
     public static Group drawX(){
         Group xShape = new Group();
-        // Crear el primer rectángulo de la "X"
+
         Rectangle rect1 = new Rectangle(40, 8); // Largo de 40, ancho de 8
         rect1.setFill(Color.RED); // Color de la "X"
         rect1.setRotate(45); // Rotar 45 grados
         rect1.setTranslateX(20); // Centrar en X
         rect1.setTranslateY(20); // Centrar en Y
 
-        // Crear el segundo rectángulo de la "X"
         Rectangle rect2 = new Rectangle(40, 8); // Largo de 40, ancho de 8
         rect2.setFill(Color.RED); // Color de la "X"
         rect2.setRotate(-45); // Rotar -45 grados
         rect2.setTranslateX(20); // Centrar en X
         rect2.setTranslateY(20); // Centrar en Y
 
-        // Grupo raíz para contener los rectángulos
          xShape.getChildren().addAll(rect1, rect2);
         return xShape;
     }
@@ -672,35 +663,29 @@ public class Ships {
     public static Group createCrosshair() {
         Group crosshairGroup = new Group();
 
-        // Círculo exterior
         Circle outerCircle = new Circle(20, 20, 18);
         outerCircle.setStroke(Color.BLACK);
         outerCircle.setFill(Color.TRANSPARENT);
         outerCircle.setStrokeWidth(2);
 
-        // Círculo interior
         Circle innerCircle = new Circle(20, 20, 10);
         innerCircle.setStroke(Color.BLACK);
         innerCircle.setFill(Color.TRANSPARENT);
         innerCircle.setStrokeWidth(1.5);
 
-        // Punto rojo en el centro
         Circle centerDot = new Circle(20, 20, 2);
         centerDot.setFill(Color.RED);
 
-        // Líneas horizontales
         Line horizontalLine = new Line(2, 20, 12, 20);
         Line horizontalLine2 = new Line(28, 20, 38, 20);
         horizontalLine.setStroke(Color.BLACK);
         horizontalLine.setStrokeWidth(2);
 
-        // Líneas verticales
         Line verticalLine = new Line(20, 2, 20, 12);
         Line verticalLine2 = new Line(20, 28, 20, 38);
         verticalLine.setStroke(Color.BLACK);
         verticalLine.setStrokeWidth(2);
 
-        // Pequeñas marcas en el círculo interior (cruces)
         Line leftCross = new Line(12, 20, 14, 20);
         Line rightCross = new Line(26, 20, 28, 20);
         Line topCross = new Line(20, 12, 20, 14);
@@ -728,7 +713,6 @@ public class Ships {
     public static Group createFire() {
         Group fireGroup = new Group();
 
-        // Llama externa (roja, más picos hacia arriba con puntos adicionales)
         Polygon outerFlame = new Polygon();
         outerFlame.getPoints().addAll(
                 12.0, 19.0, 12.0, 26.0, 14.0, 32.0, 12.0, 28.0, 12.0, 23.0,
@@ -740,7 +724,6 @@ public class Ships {
         );
         outerFlame.setFill(Color.RED);
 
-        // Llama intermedia (naranja, con más picos hacia arriba)
         Polygon middleFlame = new Polygon();
         middleFlame.getPoints().addAll(
                 20.0, 30.0, 14.0, 26.0, 9.75, 23.75, 9.75, 20.5, 9.75, 16.0,
@@ -752,7 +735,6 @@ public class Ships {
         middleFlame.setLayoutY(11.0);
         middleFlame.setLayoutX(-2.0);
 
-        // Llama interna (amarilla, con picos definidos)
         Polygon innerFlame = new Polygon();
         innerFlame.getPoints().addAll(
                 20.0, 26.0, 18.0, 24.0, 16.0, 22.0, 18.0, 20.0, 20.0, 18.0,
@@ -762,7 +744,6 @@ public class Ships {
         innerFlame.setLayoutY(10.0);
         innerFlame.setLayoutX(-2.0);
 
-        // Agregar las llamas al grupo
         fireGroup.getChildren().addAll(outerFlame, middleFlame, innerFlame);
 
         return fireGroup;

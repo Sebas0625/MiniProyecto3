@@ -22,40 +22,54 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Controller class for managing the positioning phase of the Battleship game.
+ * Handles ship placement, rotation, validation, and interaction with the game grid.
+ */
 public class PositioningController {
 
     @FXML
-    private GridPane boardGrid;
+    private GridPane boardGrid; // GridPane representing the player's game board
     @FXML
-    private GridPane shipsGrid;
-    private final Game game = new Game();
-    private final ArrayList<AShip> ships = new ArrayList<>();
-    private final SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
+    private GridPane shipsGrid; // GridPane containing ships to be placed on the board
+    private final Game game = new Game(); // Instance of the game logic
+    private final ArrayList<AShip> ships = new ArrayList<>(); // List of ships to be placed
+    private final SerializableFileHandler serializableFileHandler = new SerializableFileHandler(); // File handler for saving game data
 
+    /**
+     * Handles the "Start Game" button action.
+     * Validates if all ships are placed and starts the game if validation passes.
+     *
+     * @param event ActionEvent triggered by the button click.
+     * @throws IOException If an I/O error occurs during serialization.
+     */
     @FXML
     void handleStartGame(ActionEvent event) throws IOException {
         if (shipsGrid.getChildren().size() == 1) {
             fillPlayerPositions();
-            System.out.println("Mostrando posiciones del jugador:");
+            System.out.println("Player positions:");
             System.out.println(game.getPlayerPositions());
-            System.out.println("Mostrando matriz de la máquina:");
+            System.out.println("Machine matrix:");
             game.getMachineMatrix().printMatrix();
 
             serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
             WelcomeStage.closeInstance();
             GameStage.getInstance().getGameController().setGame(game, true);
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Debe colocar todos los barcos en alguna posición :)");
+            alert.setHeaderText("All ships must be placed on the board :)");
             alert.showAndWait();
         }
     }
 
+    /**
+     * Initializes the positioning phase by setting up the ships and grid event handlers.
+     */
     @FXML
     public void initialize() {
         initializeShipsGrid();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < ships.size(); i++) {
             Group ship = ships.get(i).getShape();
             ship.setOnDragDetected(this::onDragDetected);
 
@@ -78,6 +92,11 @@ public class PositioningController {
         boardGrid.setOnDragDropped(this::onDragDropped);
     }
 
+    /**
+     * Handles the detection of a drag event for a ship.
+     *
+     * @param event MouseEvent triggered when the drag starts.
+     */
     private void onDragDetected(MouseEvent event) {
         Group shape = (Group) event.getSource();
         Dragboard dragboard = shape.startDragAndDrop(TransferMode.MOVE);
@@ -87,6 +106,11 @@ public class PositioningController {
         event.consume();
     }
 
+    /**
+     * Handles the drag-over event to validate drop locations.
+     *
+     * @param event DragEvent triggered when dragging over the grid.
+     */
     private void onDragOver(DragEvent event) {
         if (event.getGestureSource() != boardGrid && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -94,6 +118,11 @@ public class PositioningController {
         event.consume();
     }
 
+    /**
+     * Handles the drag-and-drop event for placing ships on the board.
+     *
+     * @param event DragEvent triggered when a ship is dropped.
+     */
     private void onDragDropped(DragEvent event) {
         Dragboard db = event.getDragboard();
         boolean success = false;
@@ -121,7 +150,7 @@ public class PositioningController {
                 boardGrid.add(draggedShip, col, row, horizontal ? span : 1, horizontal ? 1 : span);
                 success = true;
             } else {
-                System.out.println("No se puede colocar el barco, posición ocupada o fuera de límites.");
+                System.out.println("Cannot place ship: position occupied or out of bounds.");
             }
         }
 
@@ -129,6 +158,16 @@ public class PositioningController {
         event.consume();
     }
 
+    /**
+     * Validates if a ship can be placed at the specified position.
+     *
+     * @param shape      The shape of the ship being placed.
+     * @param col        The starting column for the ship.
+     * @param row        The starting row for the ship.
+     * @param span       The span of the ship.
+     * @param horizontal Whether the ship is placed horizontally.
+     * @return True if the ship can be placed, false otherwise.
+     */
     private boolean canPlaceShip(Group shape, int col, int row, int span, boolean horizontal) {
         for (int i = 0; i < span; i++) {
             int checkCol = horizontal ? col + i : col;
@@ -141,9 +180,17 @@ public class PositioningController {
         return true;
     }
 
+    /**
+     * Checks if a cell is already occupied by another ship.
+     *
+     * @param shape The shape of the ship being placed.
+     * @param col   The column of the cell.
+     * @param row   The row of the cell.
+     * @return True if the cell is occupied, false otherwise.
+     */
     private boolean isCellOccupied(Group shape, int col, int row) {
         for (Node child : boardGrid.getChildren()) {
-            if (shape != child){
+            if (shape != child) {
                 Integer childCol = GridPane.getColumnIndex(child);
                 Integer childRow = GridPane.getRowIndex(child);
 
@@ -162,9 +209,12 @@ public class PositioningController {
         return false;
     }
 
-    public void fillPlayerPositions(){
+    /**
+     * Fills the player's positions with the ships' placement information on the board grid.
+     */
+    public void fillPlayerPositions() {
         int i = 0;
-        for (Node ship : boardGrid.getChildren()){
+        for (Node ship : boardGrid.getChildren()) {
             game.getPlayerPositions().add(new ArrayList<>());
 
             int row = GridPane.getRowIndex(ship) == null ? -1 : GridPane.getRowIndex(ship);
@@ -182,6 +232,12 @@ public class PositioningController {
         }
     }
 
+    /**
+     * Rotates a given ship, adjusting its orientation and updating its placement on the board.
+     * If the new position is invalid, the ship remains in its current position.
+     *
+     * @param ship The ship to rotate.
+     */
     private void rotateShip(AShip ship) {
         Group shape = ship.getShape();
         int span = ship.getSpan();
@@ -194,20 +250,23 @@ public class PositioningController {
 
         boardGrid.getChildren().remove(shape);
 
-        if (canPlaceShip(shape, col, row, span, !horizontal)){
+        if (canPlaceShip(shape, col, row, span, !horizontal)) {
             ship.setHorizontal(!horizontal);
             GridPane.setColumnSpan(shape, colSpan);
             GridPane.setRowSpan(shape, rowSpan);
             boardGrid.add(shape, col, row);
 
             shape.setRotate(horizontal ? 0 : 90);
-        } else{
+        } else {
             System.out.println("no se puede colocar");
             boardGrid.add(shape, col, row);
         }
     }
 
-    public void initializeShipsGrid(){
+    /**
+     * Initializes the ships grid with all ships, adding them to their default positions.
+     */
+    public void initializeShipsGrid() {
         Carrier carrier = new Carrier(Ships.carrier(), false);
         Submarine submarine1 = new Submarine(Ships.submarine(), false);
         Submarine submarine2 = new Submarine(Ships.submarine(), false);
@@ -243,16 +302,28 @@ public class PositioningController {
         shipsGrid.add(frigate4.getShape(), 4, 3);
     }
 
-    public void handleBackToMenu(ActionEvent event) throws IOException{
+    /**
+     * Navigates back to the welcome menu screen.
+     *
+     * @param event The action event triggered by the user.
+     * @throws IOException If the FXML file or stylesheets cannot be loaded.
+     */
+    public void handleBackToMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/welcome-view.fxml"));
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
 
-    public void playSound(String soundName, float volumeValue){
+    /**
+     * Plays a specified sound at a given volume.
+     *
+     * @param soundName   The file path of the sound to be played.
+     * @param volumeValue The volume level to play the sound at.
+     */
+    public void playSound(String soundName, float volumeValue) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
@@ -265,16 +336,22 @@ public class PositioningController {
                 volume.setValue(volumeValue);
             }
 
-        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             System.out.println("Error al reproducir el sonido.");
         }
     }
 
-    public void bSound(){
-        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
+    /**
+     * Plays the button sound effect.
+     */
+    public void bSound() {
+        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav", -10);
     }
 
-    public void startSound(){
-        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    /**
+     * Plays the game start sound effect.
+     */
+    public void startSound() {
+        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav", -10);
     }
 }
