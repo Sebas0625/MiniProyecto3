@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -16,6 +17,9 @@ import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,12 +45,15 @@ public class WelcomeController {
     @FXML
     private ImageView character5;
     @FXML
+    private ImageView tutorialImageView;
+    @FXML
     private TextField nickNameField;
     private final PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
     private String character;
 
     @FXML
     public void initialize(){
+
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
             setTransition();
@@ -114,11 +121,81 @@ public class WelcomeController {
         }
     }
 
-    @FXML
-    public void handleTutorial(){
-        startSound();
-        variableControl = 1;
 
+
+    @FXML
+    public void handleTutorial() {
+        Image tutorial = new Image(getClass().getResource("/project/miniproject3/images/tutorial.png").toExternalForm());
+        startSound();
+
+        tutorialImageView.setImage(tutorial);
+
+        if (!tutorialImageView.isVisible()) {
+            tutorialImageView.setOpacity(0);
+            tutorialImageView.setScaleX(0.5);
+            tutorialImageView.setScaleY(0.5);
+            tutorialImageView.setVisible(true);
+            tutorialImageView.setMouseTransparent(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
+
+            scaleIn.setOnFinished(e -> tutorialImageView.setMouseTransparent(false));
+        } else {
+            tutorialImageView.setOpacity(1);
+            tutorialImageView.setScaleX(1);
+            tutorialImageView.setScaleY(1);
+
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            fadeOut.play();
+            scaleOut.play();
+
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
+    }
+
+    public void setTransparent() {
+        if (tutorialImageView.isVisible()) {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            fadeOut.play();
+            scaleOut.play();
+
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
     }
 
     @FXML

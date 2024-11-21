@@ -21,7 +21,6 @@ import project.miniproject3.view.GameStage;
 
 import java.io.File;
 import javax.sound.sampled.*;
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -30,8 +29,8 @@ public class GameController implements Initializable {
     private Game game;
     private Random rand;
     private String nickname;
-    private boolean isMachineVisible = false;
     private String character;
+    boolean isMachineVisible = false;
     @FXML
     private GridPane playerBoard;
     @FXML
@@ -368,4 +367,6 @@ public class GameController implements Initializable {
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
         }
     }
+
+    public void shootSound(){playSound("src/main/resources/project/miniproject3/sounds/cannon.wav",-15);}
 }

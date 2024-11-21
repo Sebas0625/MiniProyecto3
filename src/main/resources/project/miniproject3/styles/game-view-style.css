@@ -2,6 +2,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
+.root {
+    -fx-background-image: url("../images/bg-5.jpg") format("truetype");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
 .button{
     -fx-background-color: transparent;
     -fx-font-size: 18px;

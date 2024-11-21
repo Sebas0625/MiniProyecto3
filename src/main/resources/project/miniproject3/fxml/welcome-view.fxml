@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="nicknameField" prefHeight="480.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.WelcomeController">
+<AnchorPane fx:id="nicknameField" prefHeight="480.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.miniproject3.controller.WelcomeController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="176.0" layoutY="29.0" prefHeight="168.0" prefWidth="442.0" styleClass="title2" text="BattleShip">
          <font>
@@ -96,5 +96,6 @@
             </ImageView>
          </children>
       </HBox>
+      <ImageView fx:id="tutorialImageView" fitHeight="480.0" fitWidth="780.0" mouseTransparent="true" onMouseClicked="#setTransparent" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
