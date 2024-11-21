@@ -18,6 +18,7 @@ import project.miniproject3.model.GameMatrix;
 import project.miniproject3.model.ships.Ships;
 import project.miniproject3.model.GameException;
 import project.miniproject3.view.GameStage;
+import project.miniproject3.view.WelcomeStage;
 
 import java.io.File;
 import javax.sound.sampled.*;
@@ -39,6 +40,10 @@ public class GameController implements Initializable {
     private Label endLabel;
     @FXML
     ImageView endGameImage;
+    @FXML
+    ImageView playerImageView;
+    @FXML
+    Label nicknameLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,10 +51,11 @@ public class GameController implements Initializable {
         String[] data = plainTextFileHandler.readFromFile("./src/main/resources/project/miniproject3/saves/player-data.csv");
         this.nickname = data[0];
         this.character = data[1];
-        // HACER ALGO CON LA SERIALIZACIÓN
         System.out.println(nickname);
         System.out.println(character);
 
+        showNickName();
+        showCharacter();
         Group tempImage = Ships.createCrosshair();
         tempImage.setVisible(false);
         machineBoard.getChildren().add(tempImage);
@@ -123,11 +129,36 @@ public class GameController implements Initializable {
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
         serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
         GameStage.deleteInstance();
+        WelcomeStage.getInstance();
     }
 
     public void setGame(Game game, boolean isNewGame){
         this.game = game;
         showPlayerShips(isNewGame);
+    }
+
+    public void showCharacter(){
+        switch (character){
+            case "character1": playerImageView.setImage(
+                    new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
+                break;
+            case "character2": playerImageView.setImage(
+                    new Image(getClass().getResource("/project/miniproject3/images/selection4.png").toExternalForm()));
+                break;
+            case "character3": playerImageView.setImage(
+                    new Image(getClass().getResource("/project/miniproject3/images/selection2.png").toExternalForm()));
+                break;
+            case "character4": playerImageView.setImage(
+                    new Image(getClass().getResource("/project/miniproject3/images/selection3.png").toExternalForm()));
+                break;
+            case "character5": playerImageView.setImage(
+                    new Image(getClass().getResource("/project/miniproject3/images/selection5.png").toExternalForm()));
+                break;
+        }
+    }
+
+    public void showNickName(){
+        nicknameLabel.setText(nickname);
     }
 
     public void machineTurn(){
@@ -356,6 +387,7 @@ public class GameController implements Initializable {
         }
     }
 
+    public void shootSound(){playSound("src/main/resources/project/miniproject3/sounds/cannon.wav",-15);}
 
     public void setEndGameImage(){
         if(game.getMachinePoints()==20){
@@ -367,6 +399,4 @@ public class GameController implements Initializable {
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
         }
     }
-
-    public void shootSound(){playSound("src/main/resources/project/miniproject3/sounds/cannon.wav",-15);}
 }

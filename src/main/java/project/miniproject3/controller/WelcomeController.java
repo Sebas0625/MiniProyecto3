@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -19,12 +18,12 @@ import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.animation.*;
+import project.miniproject3.view.WelcomeStage;
 
 import javax.sound.sampled.*;
 
@@ -53,7 +52,6 @@ public class WelcomeController {
 
     @FXML
     public void initialize(){
-
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
             setTransition();
@@ -111,17 +109,13 @@ public class WelcomeController {
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
         try {
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
-            GameStage.getInstance().getGameController().setGame(game, false);
-            if (game.getMachineMatrix() == null){
-                System.out.println("Usted no tiene partidas guardadas");
-            }
-        } catch (FileNotFoundException e){
+            WelcomeStage.closeInstance();
+            GameStage.getInstance().getGameController().setGame(game, true);
+        } catch (Exception e){
             e.printStackTrace();
-            System.out.println("El archivo no existe");
+            System.out.println("Usted no tiene partidas guardadas");
         }
     }
-
-
 
     @FXML
     public void handleTutorial() {
