@@ -5,25 +5,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
-import project.miniproject3.model.SerializableFileHandler;
+import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.view.GameStage;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.animation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.sound.sampled.*;
 
 public class WelcomeController {
+    int variableControl = 0;
     @FXML
     private HBox charactersBox;
     @FXML
@@ -38,24 +44,36 @@ public class WelcomeController {
     private ImageView character4;
     @FXML
     private ImageView character5;
+    @FXML
+    private ImageView tutorialImageView;
+    @FXML
+    private TextField nickNameField;
+    private final PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
+    private String character;
 
     @FXML
     public void initialize(){
+
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character1";});
         character2.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection4.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character2";});
         character3.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection2.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character3";});
         character4.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection3.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character4";});
         character5.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection5.png").toExternalForm()));
-            setTransition();});
+            setTransition();
+            character = "character5";});
     }
 
     private void setTransition(){
@@ -74,20 +92,26 @@ public class WelcomeController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/positioning-view-style.css").toExternalForm());
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), scene.getRoot());
-        fadeTransition.setFromValue(0);  // Comienza totalmente transparente
+        fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
+
+        String nickname = nickNameField.getText() == "" ? "Anónimo" : nickNameField.getText();
+        plainTextFileHandler.writeToFile("./src/main/resources/project/miniproject3/saves/player-data.csv",
+                nickname + "," + character);
 
         stage.setScene(scene);
         stage.show();
+        variableControl = 1;
     }
 
     @FXML
     public void handleContinue(ActionEvent event) throws IOException{
+        variableControl = 1;
         startSound();
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
         try {
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
-            GameStage.getInstance().getGameController().setGame(game);
+            GameStage.getInstance().getGameController().setGame(game, false);
             if (game.getMachineMatrix() == null){
                 System.out.println("Usted no tiene partidas guardadas");
             }
@@ -97,10 +121,81 @@ public class WelcomeController {
         }
     }
 
+
+
     @FXML
-    public void handleTutorial(){
+    public void handleTutorial() {
+        Image tutorial = new Image(getClass().getResource("/project/miniproject3/images/tutorial.png").toExternalForm());
         startSound();
 
+        tutorialImageView.setImage(tutorial);
+
+        if (!tutorialImageView.isVisible()) {
+            tutorialImageView.setOpacity(0);
+            tutorialImageView.setScaleX(0.5);
+            tutorialImageView.setScaleY(0.5);
+            tutorialImageView.setVisible(true);
+            tutorialImageView.setMouseTransparent(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
+
+            scaleIn.setOnFinished(e -> tutorialImageView.setMouseTransparent(false));
+        } else {
+            tutorialImageView.setOpacity(1);
+            tutorialImageView.setScaleX(1);
+            tutorialImageView.setScaleY(1);
+
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            fadeOut.play();
+            scaleOut.play();
+
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
+    }
+
+    public void setTransparent() {
+        if (tutorialImageView.isVisible()) {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), tutorialImageView);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+
+            ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.5), tutorialImageView);
+            scaleOut.setFromX(1);
+            scaleOut.setFromY(1);
+            scaleOut.setToX(0.5);
+            scaleOut.setToY(0.5);
+
+            fadeOut.play();
+            scaleOut.play();
+
+            scaleOut.setOnFinished(e -> {
+                tutorialImageView.setVisible(false);
+                tutorialImageView.setMouseTransparent(true);
+            });
+        }
     }
 
     @FXML
@@ -125,24 +220,53 @@ public class WelcomeController {
         }
     }
 
-
-
-    public void ReproducirSonido(String nombreSonido){
+    public void playSound(String nombreSonido, float volumen){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
+
+            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            if (volume != null) {
+                volume.setValue(volumen);
+            }
+
         } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             System.out.println("Error al reproducir el sonido.");
         }
     }
 
     public void bSound(){
-        ReproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav");
-    }
-    public void startSound(){
-        ReproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav");
+        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
     }
 
+    public void startSound(){
+        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
+
+    public void playBackgroundSound(String sound, float volumeValue) {
+        if(variableControl == 0) {
+            System.out.println(variableControl);
+            variableControl++;
+            System.out.println(variableControl);
+            try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+                FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+                if (volume != null) {
+                    volume.setValue(volumeValue);
+                }
+
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                System.out.println("Error al reproducir el sonido.");
+            }
+        }
+    }
 }

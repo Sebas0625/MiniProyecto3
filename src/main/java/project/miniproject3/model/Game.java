@@ -9,41 +9,50 @@ public class Game implements Serializable {
     private final GameMatrix machineMatrix;
     private final GameMatrix playerMatrix;
     private final ArrayList<ArrayList<Integer>> playerPositions;
+    private final ArrayList<ArrayList<Integer>> machinePositions;
     private int machinePoints;
-    private int PlayerPoints;
+    private int playerPoints;
 
     public Game(){
         machinePoints = 0;
-        PlayerPoints = 0;
+        playerPoints = 0;
         rand = new Random();
         machineMatrix = new GameMatrix();
         playerMatrix = new GameMatrix();
         playerPositions = new ArrayList<>();
+        machinePositions = new ArrayList<>();
         fillMachineMatrix();
     }
 
     public void fillMachineMatrix() {
+        int index = 0;
+
         // Carrier
-        placeRandomShip(4, 4);
+        placeRandomShip(4, 4, index);
+        index++;
 
         // Submarines
         for (int i = 0; i < 2; i++) {
-            placeRandomShip(3, 3);
+            placeRandomShip(3, 3, index);
+            index++;
         }
 
         // Destroyers
         for (int i = 0; i < 3; i++) {
-            placeRandomShip(2, 2);
+            placeRandomShip(2, 2, index);
+            index++;
         }
 
         // Frigates
         for (int i = 0; i < 4; i++) {
-            placeRandomShip(1, 1);
+            placeRandomShip(1, 1, index);
+            index++;
         }
     }
 
+    private void placeRandomShip(int shipSize, int shipType, int index) {
+        machinePositions.add(new ArrayList<>());
 
-    private void placeRandomShip(int shipSize, int shipType) {
         boolean validPlacement;
         int aux1, aux2, directionaux;
 
@@ -57,17 +66,26 @@ public class Game implements Serializable {
                 int checkCol = directionaux == 0 ? aux1 + i : aux1;
                 int checkRow = directionaux == 0 ? aux2 : aux2 + i;
 
-                if (checkCol >= 10 || checkRow >= 10 || machineMatrix.getNumber(checkCol, checkRow) != 0) {
+                if (checkCol >= 10 || checkRow >= 10 || machineMatrix.getNumber(checkRow, checkCol) != 0) {
                     validPlacement = false;
                     break;
                 }
             }
         } while (!validPlacement);
 
+        int rowSpan = directionaux == 0 ? 1 : shipSize;
+        int colSpan = directionaux == 0 ? shipSize : 1;
+
+        machinePositions.get(index).add(aux2);
+        machinePositions.get(index).add(aux1);
+        machinePositions.get(index).add(rowSpan);
+        machinePositions.get(index).add(colSpan);
+        machinePositions.get(index).add(shipSize);
+
         for (int i = 0; i < shipSize; i++) {
             int col = directionaux == 0 ? aux1 + i : aux1;
             int row = directionaux == 0 ? aux2 : aux2 + i;
-            machineMatrix.setNumber(col, row, shipType);
+            machineMatrix.setNumber(row, col, shipType);
         }
     }
 
@@ -83,6 +101,10 @@ public class Game implements Serializable {
         return playerPositions;
     }
 
+    public ArrayList<ArrayList<Integer>> getMachinePositions(){
+        return machinePositions;
+    }
+
     public GameMatrix getMachineMatrix(){
         return machineMatrix;
     }
@@ -91,9 +113,9 @@ public class Game implements Serializable {
 
     public int getMachinePoints(){return machinePoints;}
 
-    public int getPlayerPoints(){return PlayerPoints;}
+    public int getPlayerPoints(){return playerPoints;}
 
     public void setMachinePoints(int points){machinePoints = points;}
 
-    public void setPlayerPoints(int points){PlayerPoints = points;}
+    public void setPlayerPoints(int points){playerPoints = points;}
 }
