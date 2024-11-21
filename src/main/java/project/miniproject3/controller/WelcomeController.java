@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.animation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.sound.sampled.*;
 
 public class WelcomeController {
@@ -103,15 +102,9 @@ public class WelcomeController {
         variableControl = 1;
         startSound();
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
-        PlainTextFileHandler plainTextFileHandler = new PlainTextFileHandler();
         try {
-            String[] data = plainTextFileHandler.readFromFile("./src/main/resources/project/miniproject3/saves/player-data.csv");
-            String nickname = data[0];
-            String character = data[1];
-
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
-
-            GameStage.getInstance().getGameController().setGame(game);
+            GameStage.getInstance().getGameController().setGame(game, false);
             if (game.getMachineMatrix() == null){
                 System.out.println("Usted no tiene partidas guardadas");
             }
@@ -150,7 +143,7 @@ public class WelcomeController {
         }
     }
 
-    public void reproducirSonido(String nombreSonido, float volumen){
+    public void playSound(String nombreSonido, float volumen){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
@@ -159,7 +152,6 @@ public class WelcomeController {
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
             if (volume != null) {
                 volume.setValue(volumen);
             }
@@ -170,12 +162,14 @@ public class WelcomeController {
     }
 
     public void bSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
+        playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
     }
+
     public void startSound(){
-        reproducirSonido("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+        playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
     }
-    public void playBackgroundSound(String sound, float volumen) {
+
+    public void playBackgroundSound(String sound, float volumeValue) {
         if(variableControl == 0) {
             System.out.println(variableControl);
             variableControl++;
@@ -189,9 +183,8 @@ public class WelcomeController {
 
                 FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-                // Ajustar el volumen. El rango típico es -80.0 (silencio) a 6.0 (máximo volumen)
                 if (volume != null) {
-                    volume.setValue(volumen);
+                    volume.setValue(volumeValue);
                 }
 
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
