@@ -7,7 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import project.miniproject3.model.FileHandling.PlainTextFileHandler;
@@ -15,6 +16,7 @@ import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.model.GameMatrix;
 import project.miniproject3.model.ships.Ships;
+import project.miniproject3.model.GameException;
 import project.miniproject3.view.GameStage;
 
 import java.io.File;
@@ -36,6 +38,8 @@ public class GameController implements Initializable {
     private GridPane machineBoard;
     @FXML
     private Label endLabel;
+    @FXML
+    ImageView endGameImage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,8 +70,9 @@ public class GameController implements Initializable {
             tempImage.setVisible(false);
         });
 
-
         machineBoard.setOnMouseClicked(event -> {
+            tempImage.setVisible(false);
+            machineBoard.getChildren().remove(tempImage);
             if (game.getPlayerPoints()!=20 && game.getMachinePoints()!=20) {
                 double x = event.getX();
                 double y = event.getY();
@@ -86,7 +91,7 @@ public class GameController implements Initializable {
                     if (isGameFinished()){
                         finishGame();
                     }
-                } else if (num == 0){
+                } else if (num == 0) {
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
                     if (isGameFinished()){
@@ -94,8 +99,23 @@ public class GameController implements Initializable {
                     }
                     machineTurn();
                 }
-                game.getMachineMatrix().printMatrix();
+                else {
+                    try {
+                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6) {
+                            throw new GameException("Punto ya disparado");
+                        }
+                    } catch (GameException e) {
+                        endLabel.setText(e.getMessage());
+                        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                        pause.setOnFinished(event1 -> {
+                            endLabel.setText("");
+                        });
+                        pause.play();
+                    }
+                }
             }
+            machineBoard.getChildren().add(tempImage);
+            tempImage.setVisible(true);
         });
     }
 
@@ -118,12 +138,17 @@ public class GameController implements Initializable {
         pause.setOnFinished(event -> {
             int rand1 = 0;
             int rand2 = 0;
-
-            do {
-                rand1 = rand.nextInt(10);
-                rand2 = rand.nextInt(10);
-                System.out.println(rand1);
-                System.out.println(rand2);
+            try{
+                do {
+                    rand1 = rand.nextInt(10);
+                    rand2 = rand.nextInt(10);
+                    System.out.println(rand1);
+                    System.out.println(rand2);
+                } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("Fuera del indice de la máquina " +e.getMessage());
+            }
+            if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
             } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
 
             int num = game.getPlayerMatrix().getNumber(rand1, rand2);
@@ -144,7 +169,6 @@ public class GameController implements Initializable {
             }
             machineBoard.setDisable(false);
         });
-
         pause.play();
     }
 
@@ -194,42 +218,7 @@ public class GameController implements Initializable {
     public boolean isGameFinished(){
         if (game.getMachinePoints()==20){return true;}
         else return game.getPlayerPoints() == 20;
-    }
 
-    public void finishGame(){
-        if(game.getPlayerPoints()==20){
-            endLabel.setText("Ganaste, eres el arcano " + nickname);
-        }
-        else if(game.getMachinePoints()==20){endLabel.setText("Perdiste, eres pobre");}
-        File file = new File("./src/main/resources/project/miniproject3/saves/game-data.ser");
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (deleted) {
-                System.out.println("El archivo fue eliminado exitosamente.");
-            } else {
-                System.out.println("No se pudo eliminar el archivo.");
-            }
-        } else {
-            System.out.println("El archivo no existe.");
-        }
-    }
-
-    public void playSound(String soundName, float volumeValue){
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-
-            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            if (volume != null) {
-                volume.setValue(volumeValue);
-            }
-
-        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            System.out.println("Error al reproducir el sonido.");
-        }
     }
 
     public void verifySunkenShips(ArrayList<ArrayList<Integer>> shipData, GridPane pane, GameMatrix matrix) {
@@ -319,11 +308,64 @@ public class GameController implements Initializable {
         this.isMachineVisible = !isMachineVisible;
     }
 
+    public void playSound(String soundName, float volumeValue){
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            if (volume != null) {
+                volume.setValue(volumeValue);
+            }
+
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println("Error al reproducir el sonido.");
+        }
+    }
+
     public void bSound(){
         playSound("src/main/resources/project/miniproject3/sounds/button-3.wav",-10);
     }
 
     public void startSound(){
         playSound("src/main/resources/project/miniproject3/sounds/gameStart.wav",-10);
+    }
+
+    public void finishGame(){
+        if(game.getPlayerPoints()==20){
+            endLabel.setText("Ganaste, eres el arcano");
+            setEndGameImage();
+        }
+        else if(game.getMachinePoints()==20){
+            endLabel.setText("Perdiste, eres pobre");
+            setEndGameImage();
+        }
+
+        File file = new File("./src/main/resources/project/miniproject3/saves/game-data.ser");
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("El archivo fue eliminado exitosamente.");
+            } else {
+                System.out.println("No se pudo eliminar el archivo.");
+            }
+        } else {
+            System.out.println("El archivo no existe.");
+        }
+    }
+
+
+    public void setEndGameImage(){
+        if(game.getMachinePoints()==20){
+            endGameImage.setVisible(true);
+            endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/loseImage.png").toExternalForm()));
+        }
+        else if(game.getPlayerPoints()==20){
+            endGameImage.setVisible(true);
+            endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
+        }
     }
 }

@@ -11,11 +11,11 @@ public class Game implements Serializable {
     private final ArrayList<ArrayList<Integer>> playerPositions;
     private final ArrayList<ArrayList<Integer>> machinePositions;
     private int machinePoints;
-    private int PlayerPoints;
+    private int playerPoints;
 
     public Game(){
         machinePoints = 0;
-        PlayerPoints = 0;
+        playerPoints = 0;
         rand = new Random();
         machineMatrix = new GameMatrix();
         playerMatrix = new GameMatrix();
@@ -113,9 +113,9 @@ public class Game implements Serializable {
 
     public int getMachinePoints(){return machinePoints;}
 
-    public int getPlayerPoints(){return PlayerPoints;}
+    public int getPlayerPoints(){return playerPoints;}
 
     public void setMachinePoints(int points){machinePoints = points;}
 
-    public void setPlayerPoints(int points){PlayerPoints = points;}
+    public void setPlayerPoints(int points){playerPoints = points;}
 }
