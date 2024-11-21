@@ -1,6 +1,8 @@
 package project.miniproject3.controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -81,7 +83,7 @@ public class GameController implements Initializable {
                 double x = event.getX();
                 double y = event.getY();
                 rand= new Random();
-                game.setMachinePoints(19);
+                game.setPlayerPoints(19);
 
                 int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
                 int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
@@ -151,12 +153,11 @@ public class GameController implements Initializable {
                     rand2 = rand.nextInt(10);
                     System.out.println(rand1);
                     System.out.println(rand2);
-                } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
+                } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
             }catch (IndexOutOfBoundsException e){
                 System.out.println("Fuera del indice de la máquina " +e.getMessage());
             }
-            if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
-            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
+
 
             int num = game.getPlayerMatrix().getNumber(rand1, rand2);
 
@@ -343,11 +344,9 @@ public class GameController implements Initializable {
 
     public void finishGame(){
         if(game.getPlayerPoints()==20){
-            endLabel.setText("Ganaste, eres el arcano");
             setEndGameImage();
         }
         else if(game.getMachinePoints()==20){
-            endLabel.setText("Perdiste, eres pobre");
             setEndGameImage();
         }
 
@@ -367,12 +366,47 @@ public class GameController implements Initializable {
 
     public void setEndGameImage(){
         if(game.getMachinePoints()==20){
-            endGameImage.setVisible(true);
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/loseImage.png").toExternalForm()));
+            endGameImage.setOpacity(0);
+            endGameImage.setScaleX(0.5);
+            endGameImage.setScaleY(0.5);
+            endGameImage.setVisible(true);
+            endGameImage.setMouseTransparent(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), endGameImage);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), endGameImage);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
         }
         else if(game.getPlayerPoints()==20){
-            endGameImage.setVisible(true);
+
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
+            endGameImage.setOpacity(0);
+            endGameImage.setScaleX(0.5);
+            endGameImage.setScaleY(0.5);
+            endGameImage.setVisible(true);
+            endGameImage.setMouseTransparent(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), endGameImage);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), endGameImage);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
         }
     }
 
