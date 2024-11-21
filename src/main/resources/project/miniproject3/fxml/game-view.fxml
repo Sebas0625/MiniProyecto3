@@ -78,6 +78,6 @@
          </font>
       </Label>
       <Button layoutX="33.0" layoutY="32.0" mnemonicParsing="false" onAction="#showMachineMatrix" prefHeight="25.0" prefWidth="145.0" text="Mostrar" />
-      <ImageView fx:id="endGameImage" fitHeight="442.0" fitWidth="530.0" layoutX="185.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="endGameImage" fitHeight="442.0" fitWidth="530.0" layoutX="185.0" layoutY="29.0" onMousePressed="#returnImage" pickOnBounds="true" preserveRatio="true" visible="false" />
    </children>
 </AnchorPane>

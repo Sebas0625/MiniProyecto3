@@ -53,6 +53,8 @@ public class WelcomeController {
 
     @FXML
     public void initialize(){
+        tutorialImageView.setVisible(false);
+        tutorialImageView.setMouseTransparent(true);
 
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));

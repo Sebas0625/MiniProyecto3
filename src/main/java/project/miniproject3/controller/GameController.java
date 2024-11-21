@@ -3,13 +3,17 @@ package project.miniproject3.controller;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import project.miniproject3.model.FileHandling.PlainTextFileHandler;
 import project.miniproject3.model.Game;
@@ -77,6 +81,7 @@ public class GameController implements Initializable {
                 double x = event.getX();
                 double y = event.getY();
                 rand= new Random();
+                game.setMachinePoints(19);
 
                 int col = (int) (x / (machineBoard.getWidth() / machineBoard.getColumnCount()));
                 int row = (int) (y / (machineBoard.getHeight() / machineBoard.getRowCount()));
@@ -98,14 +103,11 @@ public class GameController implements Initializable {
                     System.out.println("LLevas "+ shots+ " disparos");
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
-                    if (isGameFinished()){
-                        finishGame();
-                    }
                     machineTurn();
                 }
                 else {
                     try {
-                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6) {
+                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6 || game.getMachineMatrix().getNumber(row, col) == 7) {
                             throw new GameException("Punto ya disparado");
                         }
                     } catch (GameException e) {
@@ -372,6 +374,16 @@ public class GameController implements Initializable {
             endGameImage.setVisible(true);
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
         }
+    }
+
+    public void returnImage(ActionEvent event) throws IOException{
+//        Parent root = FXMLLoader.load(getClass().getResource("/project/miniproject3/fxml/welcome-view.fxml"));
+//        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+//        Scene scene = new Scene(root);
+//        scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/welcome-view-style.css").toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+//        GameStage.deleteInstance();
     }
 
     public void shootSound(){playSound("src/main/resources/project/miniproject3/sounds/cannon.wav",-15);}
