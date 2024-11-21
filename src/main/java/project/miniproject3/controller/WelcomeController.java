@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,6 +53,9 @@ public class WelcomeController {
 
     @FXML
     public void initialize(){
+        tutorialImageView.setVisible(false);
+        tutorialImageView.setMouseTransparent(true);
+
         character1.setOnMouseClicked(mouseEvent ->
         { characterView.setImage(new Image(getClass().getResource("/project/miniproject3/images/selection1.png").toExternalForm()));
             setTransition();
@@ -111,9 +115,15 @@ public class WelcomeController {
             Game game = (Game) serializableFileHandler.deserialize("./src/main/resources/project/miniproject3/saves/game-data.ser");
             WelcomeStage.closeInstance();
             GameStage.getInstance().getGameController().setGame(game, true);
-        } catch (Exception e){
+        } catch (FileNotFoundException e){
             e.printStackTrace();
             System.out.println("Usted no tiene partidas guardadas");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Usted no tiene partidas guardadas");
+            alert.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la partida");
         }
     }
 

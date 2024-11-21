@@ -1,4 +1,4 @@
-package project.miniproject3.model;
+package project.miniproject3.model.Exception;
 
 public class GameException extends Exception{
     public GameException(){

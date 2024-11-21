@@ -1,11 +1,14 @@
 package project.miniproject3.controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,7 +19,7 @@ import project.miniproject3.model.Game;
 import project.miniproject3.model.FileHandling.SerializableFileHandler;
 import project.miniproject3.model.GameMatrix;
 import project.miniproject3.model.ships.Ships;
-import project.miniproject3.model.GameException;
+import project.miniproject3.model.Exception.GameException;
 import project.miniproject3.view.GameStage;
 import project.miniproject3.view.WelcomeStage;
 
@@ -44,6 +47,10 @@ public class GameController implements Initializable {
     ImageView playerImageView;
     @FXML
     Label nicknameLabel;
+    @FXML
+    Button showButton;
+    @FXML
+    Button exitButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,18 +106,16 @@ public class GameController implements Initializable {
                 } else if (num == 0) {
                     game.getMachineMatrix().setNumber(row, col, 5);
                     machineBoard.add(Ships.drawX(), col, row);
-                    if (isGameFinished()){
-                        finishGame();
-                    }
                     machineTurn();
                 }
                 else {
                     try {
-                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6) {
+                        if (game.getMachineMatrix().getNumber(row, col) == 5 || game.getMachineMatrix().getNumber(row, col) == 6 || game.getMachineMatrix().getNumber(row, col) == 7) {
                             throw new GameException("Punto ya disparado");
                         }
                     } catch (GameException e) {
                         endLabel.setText(e.getMessage());
+                        endLabel.setStyle("-fx-text-fill: Black;");
                         PauseTransition pause = new PauseTransition(Duration.seconds(2));
                         pause.setOnFinished(event1 -> {
                             endLabel.setText("");
@@ -174,12 +179,11 @@ public class GameController implements Initializable {
                     rand2 = rand.nextInt(10);
                     System.out.println(rand1);
                     System.out.println(rand2);
-                } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6);
+                } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
             }catch (IndexOutOfBoundsException e){
                 System.out.println("Fuera del indice de la máquina " +e.getMessage());
             }
-            if (game.getPlayerMatrix().getNumber(rand1, rand2) == 0) {
-            } while (game.getPlayerMatrix().getNumber(rand1, rand2) == 5 || game.getPlayerMatrix().getNumber(rand1, rand2) == 6 || game.getPlayerMatrix().getNumber(rand1, rand2) == 7);
+
 
             int num = game.getPlayerMatrix().getNumber(rand1, rand2);
 
@@ -191,6 +195,7 @@ public class GameController implements Initializable {
                 game.setMachinePoints(game.getMachinePoints() + 1);
                 playerBoard.add(Ships.createBomb(), rand2, rand1);
                 verifySunkenShips(game.getPlayerPositions(), playerBoard, game.getPlayerMatrix());
+                machineTurn();
             }
             game.getPlayerMatrix().printMatrix();
 
@@ -366,11 +371,9 @@ public class GameController implements Initializable {
 
     public void finishGame(){
         if(game.getPlayerPoints()==20){
-            endLabel.setText("Ganaste, eres el arcano");
             setEndGameImage();
         }
         else if(game.getMachinePoints()==20){
-            endLabel.setText("Perdiste, eres pobre");
             setEndGameImage();
         }
 
@@ -379,6 +382,8 @@ public class GameController implements Initializable {
             boolean deleted = file.delete();
             if (deleted) {
                 System.out.println("El archivo fue eliminado exitosamente.");
+                exitButton.setDisable(true);
+                showButton.setDisable(true);
             } else {
                 System.out.println("No se pudo eliminar el archivo.");
             }
@@ -391,12 +396,50 @@ public class GameController implements Initializable {
 
     public void setEndGameImage(){
         if(game.getMachinePoints()==20){
-            endGameImage.setVisible(true);
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/loseImage.png").toExternalForm()));
+            endGameImage.setOpacity(0);
+            endGameImage.setScaleX(0.5);
+            endGameImage.setScaleY(0.5);
+            endGameImage.setVisible(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), endGameImage);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), endGameImage);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
         }
         else if(game.getPlayerPoints()==20){
-            endGameImage.setVisible(true);
+
             endGameImage.setImage(new Image(getClass().getResource("/project/miniproject3/images/winImage.png").toExternalForm()));
+            endGameImage.setOpacity(0);
+            endGameImage.setScaleX(0.5);
+            endGameImage.setScaleY(0.5);
+            endGameImage.setVisible(true);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), endGameImage);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.5), endGameImage);
+            scaleIn.setFromX(0.5);
+            scaleIn.setFromY(0.5);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            fadeIn.play();
+            scaleIn.play();
         }
+    }
+
+    public void returnImage() throws IOException{
+        GameStage.closeInstance();
+        WelcomeStage.getInstance();
     }
 }

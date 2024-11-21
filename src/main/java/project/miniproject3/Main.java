@@ -27,7 +27,7 @@ public class Main extends Application {
      * This method is called after the application has been launched.
      *
      * @param primaryStage The primary stage for this application, onto which
-     *                     the application scene can be set.
+ x    *                     the application scene can be set.
      * @throws IOException If an I/O error occurs while initializing the WelcomeStage.
      */
     @Override
