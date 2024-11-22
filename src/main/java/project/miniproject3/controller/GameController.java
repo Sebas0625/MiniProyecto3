@@ -142,7 +142,7 @@ public class GameController implements Initializable {
     void handleExitButton(ActionEvent event) throws IOException {
         SerializableFileHandler serializableFileHandler = new SerializableFileHandler();
         serializableFileHandler.serialize("./src/main/resources/project/miniproject3/saves/game-data.ser", game);
-        GameStage.deleteInstance();
+        GameStage.closeInstance();
         WelcomeStage.getInstance();
     }
 
