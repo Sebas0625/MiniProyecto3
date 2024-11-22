@@ -121,7 +121,7 @@ public class GameController implements Initializable {
                         if (game.getMachineMatrix().getNumber(row, col) == 5 ||
                                 game.getMachineMatrix().getNumber(row, col) == 6 ||
                                 game.getMachineMatrix().getNumber(row, col) == 7) {
-                            throw new GameException("Point already shot");
+                            throw new GameException("Punto ya disparado");
                         }
                     } catch (GameException e) {
                         endLabel.setText(e.getMessage());
@@ -209,6 +209,7 @@ public class GameController implements Initializable {
             if (num == 0) {
                 game.getPlayerMatrix().setNumber(rand1, rand2, 5);
                 playerBoard.add(Ships.drawX(), rand2, rand1);
+                machineBoard.setDisable(false);
             } else {
                 game.getPlayerMatrix().setNumber(rand1, rand2, 6);
                 game.setMachinePoints(game.getMachinePoints() + 1);
@@ -221,7 +222,6 @@ public class GameController implements Initializable {
             if (isGameFinished()) {
                 finishGame();
             }
-            machineBoard.setDisable(false);
         });
         pause.play();
     }
