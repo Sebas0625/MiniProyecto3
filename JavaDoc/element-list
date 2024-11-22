@@ -1,0 +1,8 @@
+module:project.miniproject3
+project.miniproject3
+project.miniproject3.controller
+project.miniproject3.model
+project.miniproject3.model.Exception
+project.miniproject3.model.FileHandling
+project.miniproject3.model.ships
+project.miniproject3.view

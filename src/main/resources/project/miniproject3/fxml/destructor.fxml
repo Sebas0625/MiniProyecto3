@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.QuadCurve?>
+<?import javafx.scene.shape.Rectangle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+       <Polygon fill="#ac8b62" layoutX="75.0" layoutY="31.0" points="180.0, 103.5, 180.0, 116.5, 180.0, 116.5, 180.0, 126.0, 182.5, 126.0, 182.5, 161.5, 180.0, 161.5, 180.0, 167.5, 175.5, 167.5, 170.0, 167.5, 170.0, 161.5, 167.75, 161.5, 167.75, 126.0, 170.0, 126.0, 170.0, 116.5, 170.0, 116.5, 170.0, 103.5, 171.75, 103.5, 178.5, 103.5" stroke="BLACK" strokeWidth="1" />
+      <Rectangle fill="#6a6a6a" height="9.0" layoutX="245.0" layoutY="190.0" stroke="BLACK" width="10.0" />
+      <Line endX="-100.0" endY="4.25" layoutX="348.0" layoutY="193.0" startX="-100.0" stroke="WHITE" />
+      <Line endX="-100.0" endY="4.25" layoutX="352.0" layoutY="193.0" startX="-100.0" stroke="WHITE" />
+      <Line endX="-100.0" endY="4.25" layoutX="350.0" layoutY="193.0" rotate="90.0" startX="-100.0" stroke="WHITE" />
+      <Rectangle fill="#848484" height="21.0" layoutX="245.0" layoutY="161.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="10.0" />
+      <Rectangle arcHeight="2.0" arcWidth="2.0" fill="#848484" height="23.0" layoutX="246.5" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="7.0" />
+      <Rectangle arcHeight="2.0" arcWidth="2.0" fill="#848484" height="2.0" layoutX="244.0" layoutY="163.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.3" width="12.0" />
+      <Rectangle arcHeight="2.0" arcWidth="2.0" fill="#848484" height="2.0" layoutX="244.0" layoutY="175.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.3" width="12.0" />
+      <Rectangle arcHeight="2.0" arcWidth="2.0" fill="#848484" height="4.0" layoutX="243.0" layoutY="169.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.3" width="14.0" />
+      <Line endX="-95.0" fill="#353535" layoutX="347.5" layoutY="172.0" rotate="90.0" startX="-100.0" stroke="#353535" strokeWidth="2.0" />
+      <Line endX="-96.0" fill="#353535" layoutX="348.0" layoutY="172.0" rotate="90.0" startX="-100.0" />
+      <Line endX="-94.5" layoutX="347.0" layoutY="136.5" startX="-99.5" stroke="WHITE" strokeWidth="4.0" />
+      <QuadCurve controlX="10.25" controlY="6.5" endX="16.0" endY="27.5" fill="#6a6a6a" layoutX="240.0" layoutY="107.0" startX="4.25" startY="27.5" stroke="BLACK" strokeType="INSIDE" />
+      <Line endX="-96.0" fill="#353535" layoutX="348.0" layoutY="143.0" rotate="90.0" startX="-100.0" />
+      <Line endX="-96.0" fill="#353535" layoutX="348.0" layoutY="146.0" startX="-100.0" />
+      <Line endX="-96.0" fill="#353535" layoutX="348.0" layoutY="147.0" startX="-100.0" />
+      <Line endX="-96.0" fill="#353535" layoutX="348.0" layoutY="148.0" startX="-100.0" />
+
+   </children>
+</Pane>

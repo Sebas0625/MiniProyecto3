@@ -1,5 +1,6 @@
 package project.miniproject3.view;
 
+import javafx.scene.text.Font;
 import project.miniproject3.controller.GameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,13 +30,12 @@ public class GameStage extends Stage {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/project/miniproject3/fxml/game-view.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        //scene.getStylesheets().add(getClass().getResource("").toExternalForm());
+        this.gameController = loader.getController();
+        scene.getStylesheets().add(getClass().getResource("/project/miniproject3/styles/game-view-style.css").toExternalForm());
         setScene(scene);
         setTitle("Battleship");
-        setWidth(920);
-        setHeight(700);
+        getIcons().add(new Image(getClass().getResourceAsStream("/project/miniproject3/images/icon.png")));
         setResizable(false);
-        //getIcons().add(new Image(String.valueOf(getClass().getResource(""))));
 
         setOnCloseRequest(windowEvent -> {
             windowEvent.consume();
@@ -72,7 +72,6 @@ public class GameStage extends Stage {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(null);
         alert.setHeaderText("¿Seguro que desea cerrar la ventana?");
-        alert.setContentText("Perderá el progreso actual.");
         if (alert.showAndWait().get() == ButtonType.OK) {
             GameStageHolder.INSTANCE.close();
             GameStageHolder.INSTANCE = null;
